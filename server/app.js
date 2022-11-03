@@ -147,20 +147,29 @@ app.post('/getRecipes', async (req, res) => {
 
 app.post('/signIn', async (req, res) => {
   const {username, password} = req.body
-  //TODO const user = await User.findOne({ username });
-  res.sendStatus(200)
+  const user = await User.findOne({ username });
+  if (user) {
+    res.json({user});
+  } else {
+    res.sendStatus(400);
+  }
 })
 
 app.post('/signUp', async (req, res) => {
   const {username, password} = req.body
-  //TODO const user = await User.create({ username:"name", password :"pass"});
-  res.sendStatus(200)
+  const user = await User.findOne({ username });
+  if (user) {
+    res.sendStatus(400);
+  } else {
+    const user = await User.create({ username, password});
+    res.json({user});
+  }
 })
 
 app.listen(3000, () => {
   console.log(`Server port 3000 is ready`);
   mongoose.connect(
-    "mongodb://localhost:3000/easyeats",
+    "mongodb://localhost:27017/easyeats",
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false},
     () => {
       console.log('mongoose connected');

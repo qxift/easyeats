@@ -9,7 +9,7 @@ function Recipe({recipes}) {
 
   return (
     <>
-      {recipes && recipes.map(el => <p>{el}</p>)}
+      {recipes.recipes && recipes.recipes.map(el => <p>{el}</p>)}
     </> 
   );
 }
