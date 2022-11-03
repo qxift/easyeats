@@ -159,7 +159,13 @@ function submitHandler(e) {
       },
       body: JSON.stringify({username, password})
     })
-    .then(history.push('/fridge'))
+    .then(res => {
+      if (res.status == 200) {
+        history.push('/fridge')
+      } else {
+        history.push('/signIn')
+      }
+    })
 }
 
   return (

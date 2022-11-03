@@ -81,7 +81,14 @@ function SignIn() {
       },
       body: JSON.stringify({username, password})
     })
-    .then(history.push('/fridge'))
+    .then(res => res.json())
+    .then(res => {
+      if (res.status == 200) {
+        history.push('/fridge')
+      } else {
+        history.push('/signUp')
+      }
+    })
   }
 
   return (
