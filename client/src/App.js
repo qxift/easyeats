@@ -1,11 +1,15 @@
+import React,{ useState, useEffect} from "react";
 import { BrowserRouter as Router, Route} from "react-router-dom";
 import SignUp from './components/SignUp'
 import SignIn from './components/SignIn'
 import Fridge from './components/Fridge'
+import useSwitch from "./components/Mode";
 
 function App() {
+  const [pmode, togglePMode] = useSwitch()
   return (
     <div className="App">
+      <button onClick={() => togglePMode()}>Toggle Mode</button>
       <Router>
         <Route exact path="/">
           <SignUp />
