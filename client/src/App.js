@@ -9,7 +9,14 @@ function App() {
   const [pmode, togglePMode] = useSwitch()
   return (
     <div className="App">
-      <button onClick={() => togglePMode()}>Toggle Mode</button>
+      <button 
+        style={{
+          position: 'absolute',
+          top: '5px',
+          right: '5px',
+        }}
+        onClick={() => togglePMode()}> {pmode ? 'Set to Light Mode' : 'Set to Dark Mode'}
+      </button>
       <Router>
         <Route exact path="/">
           <SignUp />

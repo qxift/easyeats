@@ -9,12 +9,12 @@ export default function useSwitch() {
             localStorage.setItem('theme', 'dark')
         }
         else{
-            document.body.classList.add('light')
+            document.body.classList.remove('dark')
             localStorage.setItem('theme', 'light')
         }
     }, [pmode]);
     const toggleMode = () => {
         setpmode(!pmode)
     };
-    return[pmode, useSwitch]
+    return[pmode, toggleMode]
 }
