@@ -1,0 +1,66 @@
+.App {
+  text-align: center;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+ justify-content: center;
+ background-color: lightblue;
+}
+
+.auth-form-container, .signup-form {
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.auth-form-container {
+  padding: 5.5rem;
+  border: .5px solid rgb(100, 186, 221);
+  border-radius: 10px;
+  background-color: rgba(76, 201, 243, 0.4);
+  
+}
+  
+
+  label {
+    color: white;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: left;
+    margin-top: 25px;
+    
+  }
+
+  input {
+    margin: -.4rem 0;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+  }
+
+  button {
+    border: none;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 57px;
+
+    cursor: pointer;
+    color: lightblue;
+    font-weight: bold;
+
+  }
+
+  .link-btn {
+    background: none;
+    color: white;
+    text-decoration: underline;
+  }
+  
+  h2 {
+    color: white;
+  }
+
+  ::placeholder {
+    opacity: .5;
+  }
