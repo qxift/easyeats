@@ -1,19 +1,16 @@
 const {Schema, model} = require('mongoose')
 
-const userItemSchema = new Schema({
-  userID: [{
+const fridgeSchema = new Schema({
+  userID: {
     type: Schema.Types.ObjectId,
     ref: "User"
-  }],
-  itemID: [{
+  },
+  itemIDs: [{
     type: Schema.Types.ObjectId,
     ref: "Item"
-  }],
-  amount: String,
-
-  area: Number
+  }]
 })
 
-const userItem = model('UserItem', userItemSchema);
+const Fridge = model('Fridge', fridgeSchema);
 
-module.exports = userItem;
+module.exports = Fridge;
