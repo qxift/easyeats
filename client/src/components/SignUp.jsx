@@ -60,6 +60,7 @@ function clickHandler(e) {
         {error &&
         <label style={{color:"red"}}>
           {error}
+          
         </label>}
         <button type="submit">Sign up</button>
     </Form>
