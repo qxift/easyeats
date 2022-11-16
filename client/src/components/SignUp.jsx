@@ -15,6 +15,8 @@ function SignUp(){
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+
 
 function changeUserHandler(e) {
   setUsername(e.target.value)
@@ -38,13 +40,15 @@ function submitHandler(e) {
       if (res.status == 200) {
         history.push('/fridge')
       } else {
-        history.push('/signIn')
+        setError("Username already exists. Select other username or sign in.")
       }
     })
 }
 
+function clickHandler(e) {
+  history.push('/signIn')
+}
   return (
-    
      <div className="auth-form-container">
       <h2>Sign Up</h2>
      <Form className="signup-form" onSubmit={submitHandler}>
@@ -52,11 +56,15 @@ function submitHandler(e) {
         <input onChange={changeUserHandler} className={"username"} type="text" placeholder="name" id="username" name="username" required/>
         
         <label htmlFor="password">Password</label>
-        <input onChange={changePassHandler} className={"password"} type="text" placeholder="*******" id="password" name="password" required/>
-        
+        <input onChange={changePassHandler} className={"password"} type="password" placeholder="*******" id="password" name="password" required/>
+        {error &&
+        <label style={{color:"red"}}>
+          {error}
+          
+        </label>}
         <button type="submit">Sign up</button>
     </Form>
-     <button className="link-btn" >Already have an account? Sign in here.</button>
+     <button onClick={clickHandler} className="link-btn">Already have an account? Sign in here.</button>
      </div>
 	)
 }

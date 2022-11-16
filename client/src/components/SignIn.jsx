@@ -10,6 +10,7 @@ function SignIn() {
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
 
   // const [model, setModel] = useState("")
   // const [sizeName, setSizeName] = useState("")
@@ -81,28 +82,37 @@ function SignIn() {
       },
       body: JSON.stringify({username, password})
     })
-    .then(res => res.json())
     .then(res => {
+      console.log(res);
       if (res.status == 200) {
         history.push('/fridge')
       } else {
-        history.push('/signUp')
+        setError("Username not found. Double check or sign up.")
       }
     })
   }
 
+  function clickHandler(e) {
+    history.push('/signUp')
+  }
+
   return (
-    <Form onSubmit={submitHandler}>
-      <FormGroup>
-        <Label>Username</Label>
-        <Input onChange={changeUserHandler} className={"username"} type="text" required/>
-      </FormGroup>
-      <FormGroup>
-        <Label>Password</Label>
-        <Input onChange={changePassHandler} className={"password"} type="text" required/>
-      </FormGroup>
-      <Button>Sign in</Button>
+    <div className="auth-form-container">
+    <h2>Sign In</h2>
+    <Form className="signup-form" onSubmit={submitHandler}>
+      <label htmlFor="username">Username</label>
+      <input onChange={changeUserHandler} className={"username"} type="text" placeholder="name" id="username" name="username" required/>
+      
+      <label htmlFor="password">Password</label>
+      <input onChange={changePassHandler} className={"password"} type="password" placeholder="*******" id="password" name="password" required/>
+      {error &&
+      <label style={{color:"red"}}>
+        {error}
+      </label>}
+      <button type="submit">Sign in</button>
     </Form>
+    <button onClick={clickHandler} className="link-btn" >Don't have an account? Sign up here.</button>
+    </div>
   );
 }
 
