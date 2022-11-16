@@ -9,7 +9,7 @@ const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors')
 const Item = require('../server/model/item');
 const User = require('../server/model/user');
-const UserItem = require('../server/model/userItem');
+const Fridge = require('../server/model/fridge');
 // const fs = require('fs');
 
 app.use(cors())
@@ -147,7 +147,7 @@ app.post('/getRecipes', async (req, res) => {
 
 app.post('/signIn', async (req, res) => {
   const {username, password} = req.body
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username, password});
   if (user) {
     res.json({user});
   } else {
