@@ -1,0 +1,11 @@
+.foodIcon{
+    height: 200px;
+    width: 200px;
+}
+
+.my {
+    width: 200px;
+    height: 65px;
+    background-color: coral;
+    overflow: visible;
+  }
