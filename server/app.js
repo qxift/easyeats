@@ -141,6 +141,7 @@ app.use(express.json());
 
 app.post('/getRecipes', async (req, res) => {
   const {name, amount} = req.body
+  
   //TODO
   res.json({recipes: ["recipes"]})
 })

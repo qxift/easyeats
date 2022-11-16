@@ -1,9 +1,10 @@
-import { Container, Row, Col, Form, FormGroup, Label, Input, CardImg, Button } from 'reactstrap';
+import { Container, Row, Col, Form, FormGroup, Label, Input, CardImg, Card, CardTitle, Button } from 'reactstrap';
 import Recipe from './Recipe';
 // import { useDispatch, useSelector, } from 'react-redux';
 // import { ADD_ITEM } from '../redux/types/index';
 // import { useHistory } from 'react-router-dom'
 import { useEffect, useState } from 'react';
+import { FlatList, Text, View } from 'react-native';
 
 function Fridge() {
 
@@ -15,6 +16,7 @@ function Fridge() {
   const [name, setName] = useState("")
   const [amount, setAmount] = useState("")
   const [recipes, setRecipes] = useState([])
+  const [foodItems, setFoodItems] = useState([])
 
 //   const mySize = useSelector(state => state.size)
 //   const myColor = useSelector(state => state.color)
@@ -130,12 +132,13 @@ function changeAmountHandler(e) {
 
 function submitHandler(e) {
   e.preventDefault()
+  setFoodItems(foodItems.concat({name: name, amount: amount, key: foodItems.length}))
   fetch('http://localhost:3000/getRecipes', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({name, amount})
+      body: JSON.stringify(foodItems)//{name, amount} was here before
     })
     .then(res => res.json())
     .then(res => setRecipes(res))
@@ -146,19 +149,35 @@ function submitHandler(e) {
     <>
       <Row>
         <Col>
-          <CardImg src={`fridge.jpg`} alt="fridge" />
-        </Col>
+        <div>
+          <CardImg src={`fridge.jpg`} alt="fridge" style={{height:500, width:800, top: 0, left: 0, position: "relative"}}/>
+            <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:300, width:200, overflow:"scroll", top: 150, left: 330, position: "absolute"}}>
+              <FlatList 
+
+                numColumns={3}
+                data={foodItems}
+                renderItem={(item) => (
+                <Card>
+                <CardTitle>{item.item.name}</CardTitle>
+                <img height="50p" src={`apple.jpg`} alt="FoodIcon" />
+                </Card>
+                )}
+                extraData={foodItems}
+              />
+            </View>
+          </div>
+          </Col>
         <Col>
           <Row>
           {clicked? 
             <Form onSubmit={submitHandler}>
               <FormGroup>
                 <Label>food name</Label>
-                <Input onChange={changeFoodHandler} className={"name"} type="text" required/>
+                <Input onChange={changeFoodHandler} className={"Name"} type="text" required/>
               </FormGroup>
               <FormGroup>
                 <Label>amount</Label>
-                <Input onChange={changeAmountHandler} className={"amount"} type="text" required/>
+                <Input onChange={changeAmountHandler} className={"Amount"} type="text" required/>
               </FormGroup>
               <Button>Add</Button>
             </Form> :
