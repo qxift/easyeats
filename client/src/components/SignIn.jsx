@@ -86,6 +86,8 @@ function SignIn() {
       console.log(res);
       if (res.status == 200) {
         history.push('/fridge')
+      } else if (res.status == 401) {
+        setError("Wrong password.")
       } else {
         setError("Username not found. Double check or sign up.")
       }

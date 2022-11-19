@@ -10,6 +10,7 @@ const cors = require('cors')
 const Item = require('../server/model/item');
 const User = require('../server/model/user');
 const Fridge = require('../server/model/fridge');
+const bcrypt = require('bcrypt');
 // const fs = require('fs');
 
 app.use(cors())
@@ -147,9 +148,14 @@ app.post('/getRecipes', async (req, res) => {
 
 app.post('/signIn', async (req, res) => {
   const {username, password} = req.body
-  const user = await User.findOne({ username, password});
+  const user = await User.findOne({username});
   if (user) {
-    res.json({user});
+    const match = await bcrypt.compare(password, user.password);
+    if(match) {
+      res.json({user});
+    } else {
+      res.sendStatus(401);
+    }
   } else {
     res.sendStatus(400);
   }
@@ -161,7 +167,8 @@ app.post('/signUp', async (req, res) => {
   if (user) {
     res.sendStatus(400);
   } else {
-    const user = await User.create({ username, password});
+    const hashPass = await bcrypt.hash(password, 10)
+    const user = await User.create({ username, password: hashPass});
     res.json({user});
   }
 })
@@ -169,7 +176,7 @@ app.post('/signUp', async (req, res) => {
 app.listen(3000, () => {
   console.log(`Server port 3000 is ready`);
   mongoose.connect(
-    "mongodb://localhost:27017/easyeats",
+    "mongodb+srv://qxift:7vCcstNUuOZVMqCv@cluster0.3aaz9gl.mongodb.net/?retryWrites=true&w=majority",
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false},
     () => {
       console.log('mongoose connected');
