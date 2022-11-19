@@ -12,59 +12,6 @@ function SignIn() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
 
-  // const [model, setModel] = useState("")
-  // const [sizeName, setSizeName] = useState("")
-  // const [handlesColor, setHandlesColor] = useState(false)
-  // const [bottomColor, setBottomColor] = useState(false)
-  // const [material, setMaterial] = useState("")
-  // const [color, setColor] = useState("")
-  // const [price, setPrice] = useState("")
-  // const [limit, setLimit] = useState("")
-  // const [image, setImage] = useState("")
-  // const [imageColors, setImageColors] = useState([])
-  // const [text, setText] = useState("")
-  // const [font, setFont] = useState("")
-  // const [bold, setBold] = useState(false)
-  // const [italic, setItalic] = useState(false)
-  // const [textColor, setTextColor] = useState("")
-
-  // const [name, setName] = useState("")
-  // const [lastName, setLastName] = useState("")
-  // const [email, setEmail] = useState("")
-  // const [phone, setPhone] = useState("")
-  // const [address, setAddress] = useState("")
-
-
-  // useEffect(() => {
-  //   fetch('http://localhost:3000/getFinalCheck')
-  //   .then(response => response.json())
-  //   .then((res) => {
-  //     setModel(res.model)
-  //     setSizeName(res.sizeName)
-  //     setMaterial(res.material)
-  //     setColor(res.color)
-  //     setPrice(res.price)
-  //     setLimit(res.numBags)
-  //     if (res.bottomColor) {
-  //       setBottomColor(res.bottomColor)
-  //     }
-  //     if (res.handlesColor) {
-  //       setHandlesColor(res.handlesColor)
-  //     }
-  //     if (res.image) {
-  //       setImage(res.image.name)
-  //       setImageColors(res.image.colors)
-  //     }
-  //     if (res.text) {
-  //       setText(res.text.name)
-  //       setFont(res.text.font)
-  //       setBold(res.text.bold)
-  //       setItalic(res.text.italic)
-  //       setTextColor(res.text.color.name)
-  //     }
-  //   })
-  // }, [])
-
   function changeUserHandler(e) {
     setUsername(e.target.value)
   }
