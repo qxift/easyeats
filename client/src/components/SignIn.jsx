@@ -1,11 +1,9 @@
 import { Container, Row, Col, Form, FormGroup, Label, Input, CardImg, Button } from 'reactstrap';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom'
 
 function SignIn() {
 
-  const dispatch = useDispatch();
   const history = useHistory();   
 
   const [username, setUsername] = useState("")

@@ -1,14 +1,11 @@
 import { Container, Row, Col, Form, FormGroup, Label, Input, CardImg, Button, FormText } from 'reactstrap';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import './SignUp.css';
 //import React, {useState} from "react";
-// import { ADD_ITEM } from '../redux/types/index';
 
 function SignUp(){
 
-  const dispatch = useDispatch();
   const history = useHistory();   
 
 

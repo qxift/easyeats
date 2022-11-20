@@ -11,6 +11,7 @@ const Item = require('../server/model/item');
 const User = require('../server/model/user');
 const Fridge = require('../server/model/fridge');
 const bcrypt = require('bcrypt');
+// const fetch = require('node-fetch');
 // const fs = require('fs');
 
 app.use(cors())
@@ -24,16 +25,26 @@ const key = '623660a9d9954946acef1135e9683449';
 
 app.post('/getRecipes', async (req, res) => {
   const {name} = req.body
-  const recipes = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${name}&apiKey=${key}`, {
-    method: "GET"
-  })
-  .then(res => res.json())
 
-  if (recipes) {
-    res.json({recipes: recipes})
-  } else {
-    res.sendStatus(400)
-  }
+  // const fetchData = async () => {
+  //   const res = await ky
+  //     .get("https://jsonplaceholder.typicode.com/todos/1")
+  //     .json();
+  //   setData(res);
+  //   console.log(res);
+  // };
+
+  // const recipes = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${name}&apiKey=${key}`, {
+  //   method: "GET"
+  // })
+  // .then(res => res.json())
+
+  // if (recipes) {
+  //   res.json({recipes: recipes})
+  // } else {
+  //   res.sendStatus(400)
+  // }
+  res.json({recipes: recipes})
 })
 
 app.post('/signIn', async (req, res) => {
