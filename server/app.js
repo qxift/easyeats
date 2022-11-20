@@ -44,7 +44,7 @@ app.post('/getRecipes', async (req, res) => {
   // } else {
   //   res.sendStatus(400)
   // }
-  res.json({recipes: recipes})
+  res.json({recipes: []})
 })
 
 app.post('/signIn', async (req, res) => {

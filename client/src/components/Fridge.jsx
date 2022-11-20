@@ -32,7 +32,7 @@ function changeAmountHandler(e) {
 }
 
 function submitHandler(e) {
-  // setFoodItems(foodItems.concat({name: name, amount: amount, key: foodItems.length}))
+  setFoodItems(foodItems.concat({name: name, amount: amount, key: foodItems.length}))
   setError("")
   e.preventDefault()
   const recipes = fetch('http://localhost:3000/getRecipes', {
@@ -51,8 +51,6 @@ function submitHandler(e) {
         }
     })
     
-    //search; if recipies -> visualize
-
   setClicked(false)
 }
 
