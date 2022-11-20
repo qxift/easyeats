@@ -11,7 +11,7 @@ const Item = require('../server/model/item');
 const User = require('../server/model/user');
 const Fridge = require('../server/model/fridge');
 const bcrypt = require('bcrypt');
-// const fetch = require('node-fetch');
+const fetch = require('node-fetch');
 // const fs = require('fs');
 
 app.use(cors())
@@ -23,28 +23,37 @@ app.use(express.json());
 
 const key = '623660a9d9954946acef1135e9683449';
 
+async function getDesc(recipes) {
+  const descArr = []
+
+  for (i = 0; i < recipes.length; i++) {
+    await fetch(`https://api.spoonacular.com/recipes/${recipes[i].id}/information?includeNutrition=false&apiKey=${key}`, {
+      method: "GET"
+    })
+    .then(res => res.json())
+    .then(res => {
+      const {title, image, spoonacularSourceUrl, summary} = res;
+      descArr.push({title, image, spoonacularSourceUrl, summary})
+    })
+  }
+
+  return descArr
+}
+
 app.post('/getRecipes', async (req, res) => {
   const {name} = req.body
 
-  // const fetchData = async () => {
-  //   const res = await ky
-  //     .get("https://jsonplaceholder.typicode.com/todos/1")
-  //     .json();
-  //   setData(res);
-  //   console.log(res);
-  // };
+  const recipes = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${name}&apiKey=${key}`, {
+    method: "GET"
+  })
+  .then(res => res.json())
 
-  // const recipes = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${name}&apiKey=${key}`, {
-  //   method: "GET"
-  // })
-  // .then(res => res.json())
-
-  // if (recipes) {
-  //   res.json({recipes: recipes})
-  // } else {
-  //   res.sendStatus(400)
-  // }
-  res.json({recipes: []})
+  if (recipes) {
+    const descArr = await getDesc(recipes)
+    res.json({recipes: descArr})
+  } else {
+    res.sendStatus(400)
+  }
 })
 
 app.post('/signIn', async (req, res) => {

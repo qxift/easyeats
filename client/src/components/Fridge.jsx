@@ -32,22 +32,22 @@ function changeAmountHandler(e) {
 }
 
 function submitHandler(e) {
-  setFoodItems(foodItems.concat({name: name, amount: amount, key: foodItems.length}))
   setError("")
   e.preventDefault()
   const recipes = fetch('http://localhost:3000/getRecipes', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({name})
-    })
-    .then(res => res.json())
-    .then(res => {
-        if(res.recipes.length == 0) {
-          setError("No recipes found for this ingredient")
-        } else {
-          setRecipes(res.recipes)
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({name})
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.recipes.length == 0) {
+      setError("No recipes found for this ingredient")
+    } else {
+      setRecipes(res.recipes)
+      setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
         }
     })
     
@@ -68,7 +68,7 @@ function submitHandler(e) {
             renderItem={(item) => (
             <Card>
             <CardTitle>{item.item.name}</CardTitle>
-            <img height="50p" src={`apple.jpg`} alt="FoodIcon" />
+            <img height="50p" src={`https://spoonacular.com/cdn/ingredients_100x100/${item.item.name}.jpg`} alt="FoodIcon" />
             </Card>
             )}
             extraData={foodItems}
