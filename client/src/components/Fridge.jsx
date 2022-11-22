@@ -56,11 +56,11 @@ function submitHandler(e) {
 
   return (
     <>
-      <Row>
+      
         <Col>
         <div>
-        <CardImg src={`fridge.jpg`} alt="fridge" style={{height:500, width:800, top: 0, left: 0, position: "relative"}}/>
-        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:300, width:200, overflow:"scroll", top: 150, left: 330, position: "absolute"}}>
+        <CardImg src={`fridge.jpg`} alt="fridge" style={{height:500, width:800, top: 300, left: -50, position: "relative"}}/>
+        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:500, width:200, overflow:"scroll", top: -200, left: 330}}>
           <FlatList 
             
             numColumns={3}
@@ -102,15 +102,17 @@ function submitHandler(e) {
             <Button onClick={clickHandler}>Add food</Button>}
           </Row>
           <Row>
+          <div style={{flexGrow: 0, height:500, width:400, overflow:"scroll"}}>
           {error? 
           <label style={{color:"red"}}>
           {error}
         </label>
           : <Recipe recipes={recipes}/>
           }
+          </div>
           </Row>
         </Col>
-      </Row>
+      
       
     </> 
   );
