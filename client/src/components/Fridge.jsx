@@ -5,7 +5,8 @@ import { FlatList, Text, View } from 'react-native';//importing react-native mig
 
 function Fridge() {
 
-  const [clicked, setClicked] = useState(false)
+  const [clickedRecipes, setClickedRecipes] = useState(false)
+  const [clickedAddFood, setClickedAddFood] = useState(false)
   const [name, setName] = useState("")
   const [amount, setAmount] = useState("")
   const [foodItems, setFoodItems] = useState([])
@@ -19,11 +20,19 @@ function Fridge() {
    
   }, [recipes])
 
-function clickHandler(e) {
-  setClicked(prev => true)
+function clickRecipesHandler(e) {
+  setClickedRecipes(prev => true)
 }
 
-function changeFoodHandler(e) {
+function clickAddFoodHandler(e) {
+  setClickedAddFood(prev => true)
+}
+
+function changeFoodRecipesHandler(e) {
+  //setName(e.target.value)
+}
+
+function changeAddFoodHandler(e) {
   setName(e.target.value)
 }
 
@@ -31,7 +40,7 @@ function changeAmountHandler(e) {
   setAmount(e.target.value)
 }
 
-function submitHandler(e) {
+function submitRecipesHandler(e) {
   setError("")
   e.preventDefault()
   const recipes = fetch('http://localhost:3000/getRecipes', {
@@ -47,20 +56,44 @@ function submitHandler(e) {
       setError("No recipes found for this ingredient")
     } else {
       setRecipes(res.recipes)
-      setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
+      //setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
         }
-    })
-    
-  setClicked(false)
+    }) 
+  setClickedRecipes(false)
+}
+
+function submitAddFoodHandler(e) {
+  setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
+  setError("")
+  e.preventDefault()
+  const recipes = fetch('http://localhost:3000/getFoodMatches', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({name})
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.recipes.length == 0) {
+      setError("No recipes found for this ingredient")
+    } else {
+      console.log(res.recipes.results)
+      setRecipes(res.recipes.results)
+      //setRecipes(res.recipes)
+      //setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
+        }
+    }) 
+  setClickedAddFood(false)
 }
 
   return (
     <>
-      <Row>
+      
         <Col>
         <div>
-        <CardImg src={`fridge.jpg`} alt="fridge" style={{height:500, width:800, top: 0, left: 0, position: "relative"}}/>
-        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:300, width:200, overflow:"scroll", top: 150, left: 330, position: "absolute"}}>
+        <CardImg src={`fridge.jpg`} alt="fridge" style={{height:500, width:800, top: 300, left: -50, position: "relative"}}/>
+        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:500, width:200, overflow:"scroll", top: -200, left: 330}}>
           <FlatList 
             
             numColumns={3}
@@ -77,12 +110,22 @@ function submitHandler(e) {
           </div>
         </Col>
         <Col>
+        <div style={{flexGrow: 0, height:500, width:400, overflow:"scroll"}}>
+          {error? 
+          <label style={{color:"red"}}>
+          {error}
+        </label>
+          : <Recipe recipes={recipes}/>
+          }
+          </div>
+        </Col>
+        <Col>
           <Row>
-          {clicked? 
-            <Form onSubmit={submitHandler}>
+          {clickedRecipes? 
+            <Form onSubmit={submitRecipesHandler}>
               <FormGroup>
                 <Label>food name</Label>
-                <Input onChange={changeFoodHandler} className={"Name"} type="text" required/>
+                <Input onChange={changeFoodRecipesHandler} className={"Name"} type="text" required/>
               </FormGroup>
               <FormGroup>
                   <Label>Other Preferences</Label>
@@ -99,18 +142,21 @@ function submitHandler(e) {
                 </FormGroup>
               <Button>Add</Button>
             </Form> :
-            <Button onClick={clickHandler}>Add food</Button>}
+            <Button onClick={clickRecipesHandler}>Get Recipes</Button>}
           </Row>
           <Row>
-          {error? 
-          <label style={{color:"red"}}>
-          {error}
-        </label>
-          : <Recipe recipes={recipes}/>
-          }
+          {clickedAddFood? 
+            <Form onSubmit={submitAddFoodHandler}>
+              <FormGroup>
+                <Label>Food name</Label>
+                <Input onChange={changeAddFoodHandler} className={"Name"} type="text" required/>
+              </FormGroup>
+              <Button>Add</Button>
+            </Form> :
+            <Button onClick={clickAddFoodHandler}>Add food</Button>}
           </Row>
         </Col>
-      </Row>
+      
       
     </> 
   );

@@ -56,6 +56,21 @@ app.post('/getRecipes', async (req, res) => {
   }
 })
 
+app.post('/getFoodMatches', async (req, res) => {
+  const {name} = req.body
+
+  const matches = await fetch(`https://api.spoonacular.com/food/ingredients/search?query=${name}&apiKey=623660a9d9954946acef1135e9683449`, {
+    method: "GET"
+  })
+  .then(res => res.json())
+
+  if (1 == 1) {
+    res.json({recipes: matches})
+  } else {
+    res.sendStatus(400)
+  }
+})
+
 app.post('/signIn', async (req, res) => {
   const {username, password} = req.body
   const user = await User.findOne({username});
