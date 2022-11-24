@@ -32,9 +32,9 @@ function SignIn() {
       if (res.status == 200) {
         history.push('/fridge')
       } else if (res.status == 401) {
-        setError("Wrong password.")
+        setError("Incorrect password. Try again.")
       } else {
-        setError("Username not found. Double check or sign up.")
+        setError("Username not found. Try again or sign up.")
       }
     })
   }
@@ -45,7 +45,7 @@ function SignIn() {
 
   return (
     <div className="auth-form-container">
-    <h2>Sign In</h2>
+    <h2>EasyEats</h2>
     <Form className="signup-form" onSubmit={submitHandler}>
       <label htmlFor="username">Username</label>
       <input onChange={changeUserHandler} className={"username"} type="text" placeholder="name" id="username" name="username" required/>
@@ -56,7 +56,7 @@ function SignIn() {
       <label style={{color:"red"}}>
         {error}
       </label>}
-      <button type="submit">Sign in</button>
+      <button type="submit">Sign In</button>
     </Form>
     <button onClick={clickHandler} className="link-btn" >Don't have an account? Sign up here.</button>
     </div>
