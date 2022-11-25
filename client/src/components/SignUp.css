@@ -15,7 +15,7 @@
 
 .auth-form-container {
   padding: 5.5rem;
-  border: .5px solid rgb(100, 186, 221);
+  border: 5px solid rgb(100, 186, 221);
   border-radius: 10px;
   background-color: rgba(76, 201, 243, 0.4);
   
@@ -63,6 +63,7 @@
   h2 {
     color: white;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    /*outline: 5px dotted whitesmoke;*/
   }
 
   ::placeholder {
