@@ -1,14 +1,11 @@
 import { Container, Row, Col, Form, FormGroup, Label, Input, CardImg, Button, FormText } from 'reactstrap';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import './SignUp.css';
 //import React, {useState} from "react";
-// import { ADD_ITEM } from '../redux/types/index';
 
 function SignUp(){
 
-  const dispatch = useDispatch();
   const history = useHistory();   
 
 
@@ -40,7 +37,7 @@ function submitHandler(e) {
       if (res.status == 200) {
         history.push('/fridge')
       } else {
-        setError("Username already exists. Select other username or sign in.")
+        setError("Username taken. Try another or sign in.")
       }
     })
 }
@@ -50,7 +47,7 @@ function clickHandler(e) {
 }
   return (
      <div className="auth-form-container">
-      <h2>Sign Up</h2>
+      <h2>EasyEats</h2>
      <Form className="signup-form" onSubmit={submitHandler}>
         <label htmlFor="username">Username</label>
         <input onChange={changeUserHandler} className={"username"} type="text" placeholder="name" id="username" name="username" required/>
@@ -62,7 +59,8 @@ function clickHandler(e) {
           {error}
           
         </label>}
-        <button type="submit">Sign up</button>
+
+        <button type="submit">Sign Up</button>
     </Form>
      <button onClick={clickHandler} className="link-btn">Already have an account? Sign in here.</button>
      </div>

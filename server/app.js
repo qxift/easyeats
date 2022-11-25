@@ -10,6 +10,8 @@ const cors = require('cors')
 const Item = require('../server/model/item');
 const User = require('../server/model/user');
 const Fridge = require('../server/model/fridge');
+const bcrypt = require('bcrypt');
+const fetch = require('node-fetch');
 // const fs = require('fs');
 
 app.use(cors())
@@ -19,137 +21,66 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // app.use(fileUpload());
 
+const key = '623660a9d9954946acef1135e9683449';
 
-// app.get('/getInfo', async (req, res) => {
-//   const models = await BagModel.find()
-//   const sizes = await BagSize.find({bagModel: models[0].name})
-//   const colors = await BagColor.find()
-//   const materials = await Material.find()
-//   res.json({models, sizes, colors, materials})
-// })
+async function getDesc(recipes) {
+  const descArr = []
 
-// app.post('/getSizesModelInfo', async (req, res) => {
-//   const model = await BagModel.findOne({name: req.body.model}, {_id: 0, __v: 0})
-//   const sizes = await BagSize.find({bagModel: model.name})
-//   res.json({model, sizes})
-// })
+  for (i = 0; i < recipes.length; i++) {
+    await fetch(`https://api.spoonacular.com/recipes/${recipes[i].id}/information?includeNutrition=false&apiKey=${key}`, {
+      method: "GET"
+    })
+    .then(res => res.json())
+    .then(res => {
+      const {title, image, spoonacularSourceUrl, summary} = res;
+      descArr.push({title, image, spoonacularSourceUrl, summary})
+    })
+  }
 
-// app.post('/getProportions', async (req, res) => {
-//   const {model, sizeName} = req.body
-//   const size = await BagSize.findOne({bagModel: model, sizeName})
-//   res.json({proportions: {
-//     price: size.price,
-//     height: size.height,
-//     width: size.width,
-//     depth: size.depth,
-//     handleSize: size.handleSize
-//   }})
-// })
-
-// app.post('/getColor', async (req, res) => {
-//   const color = await BagColor.findOne({name: req.body.color}, {_id: 0, __v: 0})
-//   res.json(color)
-// })
-
-// app.post('/getMaterial', async (req, res) => {
-//   const material = await Material.findOne({name: req.body.material}, {_id: 0, __v: 0})
-//   res.json(material)
-// })
-
-// app.post('/check', async (req, res) => {
-//   const { model, color, material, size, limit, handlesColor, bottomColor} = req.body;
-//   const finalBag = await BagModel.findOne({ name: model });
-//   const finalBagColor = await BagColor.findOne({ name: color });
-//   const finalMaterial = await Material.findOne({ name: material });
-//   const finalSize = await BagSize.findOne({ bagModel: model, sizeName: size });
-//   let finalHandlesColor = null;
-//   let finalBottomColor = null;
-//   let colorPrice = finalBagColor.price;
-//   if (model.changeableHandles) {
-//     finalHandlesColor = await BagColor.findOne({ name: handlesColor });
-//     colorPrice += finalHandlesColor.price
-//   } 
-//   if (model.changeableBottom) {
-//     finalBottomColor = await BagColor.findOne({ name: bottomColor });
-//     colorPrice += finalBottomColor.price
-//   }
-//   let numBags = limit
-//   const check = await Check.create({
-//     bagModel: finalBag,
-//     bagColor: finalBagColor,
-//     material: finalMaterial,
-//     size: finalSize,
-//     bottomColor: finalHandlesColor,
-//     handlesColor: finalBottomColor,
-//     numBags: numBags,
-//     price:
-//     (finalBagColor.price + finalMaterial.price + finalSize.price),
-//     image: null,
-//     text: null
-//   });
-//   res.sendStatus(200)
-// });
-
-// let myModel = "";
-// let myColor = "";
-// let myMaterial = "";
-
-// app.get('/getBag', async (req, res) => {
-//   const check = await Check.findOne({}, {}, { sort: { 'updatedAt' : -1 } }).populate('bagModel').populate('bagColor').populate('material')
-//   myModel = check.bagModel.name;
-//   myColor = check.bagColor.name;
-//   myMaterial = check.material.name;
-//   res.json({model: check.bagModel.name, color: check.bagColor.name, material: check.material.name, price: check.price})
-// })
-
-// app.post('/uploading', (req, res) => {
-//   if (req.files === null) {
-//     return res.status(400).json({msg: 'No file uploaded'})
-//   }
-
-//   const {image} = req.files;
-
-//   if (!fs.existsSync(`${__dirname}/public/myImage/${image.name}`)) {
-//     const location = `${__dirname}/client/public/myImage/${image.name}`.replace("/server", "")
-//     image.mv(location)
-//     const location2 = `${__dirname}/public/myImage/${image.name}`
-//     image.mv(location2)
-//   }
-//   res.json({imagePath: image.name})
-// })
-
-// app.post('/check2', async (req, res) => {
-//   const {imagePath, imageHeight, imageColors, text, textSize, bold, italic, font, textColor, price} = req.body
-//   const check = await Check.findOneAndUpdate({}, {}, { sort: { 'updatedAt' : -1 } }, {price: price})
-//   if (imagePath) {
-//     const myImgColors = [];
-//     for (let i = 0; i < imageColors.length; i++) {
-//       const color = await BagColor.findOne({name: imageColors[i]})      
-//       myImgColors.push(color)
-//     }
-//     const image = await Image.create({name: imagePath, area: imageHeight, colors: myImgColors})
-//     const check2 = await Check.findByIdAndUpdate(check._id, {image: image});
-//     check2.save()
-//   }
-//   if (text) {
-//       const color = await BagColor.findOne({name: textColor})
-//       const myText = await Text.create({name: text, color, area: textSize, bold, italic, font})
-//       const check2 = await Check.findByIdAndUpdate(check._id, {text: myText});
-//       check2.save()
-//     }
-// })
+  return descArr
+}
 
 app.post('/getRecipes', async (req, res) => {
-  const {name, amount} = req.body
-  //TODO
-  res.json({recipes: ["recipes"]})
+  const {name} = req.body
+
+  const recipes = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${name}&apiKey=${key}`, {
+    method: "GET"
+  })
+  .then(res => res.json())
+
+  if (recipes) {
+    const descArr = await getDesc(recipes)
+    res.json({recipes: descArr})
+  } else {
+    res.sendStatus(400)
+  }
+})
+
+app.post('/getFoodMatches', async (req, res) => {
+  const {name} = req.body
+
+  const matches = await fetch(`https://api.spoonacular.com/food/ingredients/search?query=${name}&apiKey=623660a9d9954946acef1135e9683449`, {
+    method: "GET"
+  })
+  .then(res => res.json())
+
+  if (1 == 1) {
+    res.json({recipes: matches})
+  } else {
+    res.sendStatus(400)
+  }
 })
 
 app.post('/signIn', async (req, res) => {
   const {username, password} = req.body
-  const user = await User.findOne({ username, password});
+  const user = await User.findOne({username});
   if (user) {
-    res.json({user});
+    const match = await bcrypt.compare(password, user.password);
+    if(match) {
+      res.json({user});
+    } else {
+      res.sendStatus(401);
+    }
   } else {
     res.sendStatus(400);
   }
@@ -161,7 +92,8 @@ app.post('/signUp', async (req, res) => {
   if (user) {
     res.sendStatus(400);
   } else {
-    const user = await User.create({ username, password});
+    const hashPass = await bcrypt.hash(password, 10)
+    const user = await User.create({ username, password: hashPass});
     res.json({user});
   }
 })
@@ -169,7 +101,7 @@ app.post('/signUp', async (req, res) => {
 app.listen(3000, () => {
   console.log(`Server port 3000 is ready`);
   mongoose.connect(
-    "mongodb://localhost:27017/easyeats",
+    "mongodb+srv://qxift:7vCcstNUuOZVMqCv@cluster0.3aaz9gl.mongodb.net/?retryWrites=true&w=majority",
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false},
     () => {
       console.log('mongoose connected');

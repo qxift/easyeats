@@ -1,129 +1,38 @@
 import { Container, Row, Col, Form, FormGroup, Label, Input, Card, CardTitle, CardImg, Button } from 'reactstrap';
 import Recipe from './Recipe';
-// import { useDispatch, useSelector, } from 'react-redux';
-// import { ADD_ITEM } from '../redux/types/index';
-// import { useHistory } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';//importing react-native might introduce errors, because of dependency conflict
 
 function Fridge() {
 
-//   const dispatch = useDispatch();
-//   const history = useHistory();     
-
-
-  const [clicked, setClicked] = useState(false)
+  const [clickedRecipes, setClickedRecipes] = useState(false)
+  const [clickedAddFood, setClickedAddFood] = useState(false)
   const [name, setName] = useState("")
   const [amount, setAmount] = useState("")
   const [foodItems, setFoodItems] = useState([])
   const [recipes, setRecipes] = useState([])
+  const [error, setError] = useState("")
 
-//   const mySize = useSelector(state => state.size)
-//   const myColor = useSelector(state => state.color)
-//   const myMaterial = useSelector(state => state.material)
-//   const myBottomColor = useSelector(state => state.bottomColor)
-//   const myHandleColor = useSelector(state => state.handleColor)
-//   const [models, setModels] = useState([])
-//   const [sizes, setSizes] = useState([])
-//   const [proportions, setProportions] = useState({})
-//   const [materials, setMaterials] = useState([])
-//   const [colors, setColors] = useState([])
-//   const [limit, setLimit] = useState(null)
-  
   useEffect(() => {
     
     // fetch('http://localhost:3000/getInfo')
     // .then(response => response.json())
    
   }, [recipes])
-//   const [totalPrice, setTotalPrice] = useState(0)
 
-//   function changeModelHandler(e) {
-//     fetch('http://localhost:3000/getSizesModelInfo', {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify({model: e.target.value})
-//     })
-//     .then(res => res.json())
-//     .then(response => {
-//       const newSizes = response.sizes
-//       const newModel = response.model
-//       setSizes(newSizes)
-//       setProportions({height: newSizes[0].height, width: newSizes[0].width, depth: newSizes[0].depth, handleSize: newSizes[0].handleSize})
-//       dispatch({
-//         type: ADD_ITEM,
-//         payload: {model: newModel}
-//       })
-//     })
-//   }
-
-//   function changeSizeHandler(e) {
-//     fetch('http://localhost:3000/getProportions', {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify({model: myModel.name, sizeName: e.target.value})
-//     })
-//     .then(res => res.json())
-//     .then(response => {
-//       setProportions(response.proportions)
-//     })
-//   }
-
-//   function changeMaterialHandler(e) {
-//     fetch('http://localhost:3000/getMaterial', {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify({material: e.target.value})
-//     })
-//     .then(res => res.json())
-//     .then(response => {
-//       dispatch({
-//         type: ADD_ITEM,
-//         payload: {material: response}
-//       })
-//     })
-//   }
-  
-//   function changeColorHandler(e) {
-//     fetch('http://localhost:3000/getColor', {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify({color: e.target.value})
-//     })
-//     .then(res => res.json())
-//     .then(response => {
-//       let payload = {};
-//       const classNam = e.target.className.split(" ")[0]
-//       if (classNam === "color") {
-//         payload = {color: response};
-//       } else if (classNam === "bottom") {
-//         payload = {bottomColor: response};
-//       } else if (classNam === "handles") {
-//         payload = {
-//           ...payload,
-//           handleColor: response
-//         };
-//       }
-//       dispatch({
-//         type: ADD_ITEM,
-//         payload: payload
-//       })
-//     })
-//   }
-
-function clickHandler(e) {
-  setClicked(prev => true)
+function clickRecipesHandler(e) {
+  setClickedRecipes(prev => true)
 }
 
-function changeFoodHandler(e) {
+function clickAddFoodHandler(e) {
+  setClickedAddFood(prev => true)
+}
+
+function changeFoodRecipesHandler(e) {
+  //setName(e.target.value)
+}
+
+function changeAddFoodHandler(e) {
   setName(e.target.value)
 }
 
@@ -131,31 +40,60 @@ function changeAmountHandler(e) {
   setAmount(e.target.value)
 }
 
-function submitHandler(e) {
-  setFoodItems(foodItems.concat({name: name, amount: amount, key: foodItems.length}))
+function submitRecipesHandler(e) {
+  setError("")
   e.preventDefault()
-  /*
-  fetch('http://localhost:3000/getRecipes', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(foodItems)//{name, amount} was here before
-    })
-    .then(res => res.json())
-    .then(res => setRecipes(res))
-    */
-  setClicked(false)
-  console.log(foodItems)
+  const recipes = fetch('http://localhost:3000/getRecipes', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({name})
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.recipes.length == 0) {
+      setError("No recipes found for this ingredient")
+    } else {
+      setRecipes(res.recipes)
+      //setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
+        }
+    }) 
+  setClickedRecipes(false)
+}
+
+function submitAddFoodHandler(e) {
+  setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
+  setError("")
+  e.preventDefault()
+  const recipes = fetch('http://localhost:3000/getFoodMatches', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({name})
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.recipes.length == 0) {
+      setError("No recipes found for this ingredient")
+    } else {
+      console.log(res.recipes.results)
+      setRecipes(res.recipes.results)
+      //setRecipes(res.recipes)
+      //setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
+        }
+    }) 
+  setClickedAddFood(false)
 }
 
   return (
     <>
-      <Row>
+      
         <Col>
         <div>
-        <CardImg src={`fridge.jpg`} alt="fridge" style={{height:500, width:800, top: 0, left: 0, position: "relative"}}/>
-        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:300, width:200, overflow:"scroll", top: 150, left: 330, position: "absolute"}}>
+        <CardImg src={`fridge.jpg`} alt="fridge" style={{height:500, width:800, top: 300, left: -50, position: "relative"}}/>
+        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:500, width:200, overflow:"scroll", top: -200, left: 330}}>
           <FlatList 
             
             numColumns={3}
@@ -163,7 +101,7 @@ function submitHandler(e) {
             renderItem={(item) => (
             <Card>
             <CardTitle>{item.item.name}</CardTitle>
-            <img height="50p" src={`apple.jpg`} alt="FoodIcon" />
+            <img height="50p" src={`https://spoonacular.com/cdn/ingredients_100x100/${item.item.name}.jpg`} alt="FoodIcon" />
             </Card>
             )}
             extraData={foodItems}
@@ -172,26 +110,53 @@ function submitHandler(e) {
           </div>
         </Col>
         <Col>
+        <div style={{flexGrow: 0, height:500, width:400, overflow:"scroll"}}>
+          {error? 
+          <label style={{color:"red"}}>
+          {error}
+        </label>
+          : <Recipe recipes={recipes}/>
+          }
+          </div>
+        </Col>
+        <Col>
           <Row>
-          {clicked? 
-            <Form onSubmit={submitHandler}>
+          {clickedRecipes? 
+            <Form onSubmit={submitRecipesHandler}>
               <FormGroup>
                 <Label>food name</Label>
-                <Input onChange={changeFoodHandler} className={"Name"} type="text" required/>
+                <Input onChange={changeFoodRecipesHandler} className={"Name"} type="text" required/>
               </FormGroup>
               <FormGroup>
-                <Label>amount</Label>
-                <Input onChange={changeAmountHandler} className={"Amount"} type="text" required/>
+                  <Label>Other Preferences</Label>
+                  <Input type="select">
+                    <option>Maximize used ingredients </option>
+                    <option>Minimize missing ingredients</option>
+                  </Input>
+                </FormGroup>
+                <FormGroup check>
+                  <Label check>
+                    <Input type="checkbox" />{' '}
+                    Ignore typical pantry items, such as water, salt, flour, etc.
+                  </Label>
+                </FormGroup>
+              <Button>Add</Button>
+            </Form> :
+            <Button onClick={clickRecipesHandler}>Get Recipes</Button>}
+          </Row>
+          <Row>
+          {clickedAddFood? 
+            <Form onSubmit={submitAddFoodHandler}>
+              <FormGroup>
+                <Label>Food name</Label>
+                <Input onChange={changeAddFoodHandler} className={"Name"} type="text" required/>
               </FormGroup>
               <Button>Add</Button>
             </Form> :
-            <Button onClick={clickHandler}>Add food</Button>}
-          </Row>
-          <Row>
-          <Recipe recipes={recipes}/>
+            <Button onClick={clickAddFoodHandler}>Add food</Button>}
           </Row>
         </Col>
-      </Row>
+      
       
     </> 
   );

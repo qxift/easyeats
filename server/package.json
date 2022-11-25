@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -7,6 +8,7 @@
     "fs": "*",
     "mongoose": "^5.12.7",
     "morgan": "^1.10.0",
+    "node-fetch": "^2.6.1",
     "nodemailer": "^6.6.0",
     "pdfmake": "^0.1.71"
   }
