@@ -124,7 +124,7 @@ function submitAddFoodHandler(e) {
           {clickedRecipes? 
             <Form onSubmit={submitRecipesHandler}>
               <FormGroup>
-                <Label>food name</Label>
+                <Label>Food Name</Label>
                 <Input onChange={changeFoodRecipesHandler} className={"Name"} type="text" required/>
               </FormGroup>
               <FormGroup>

@@ -28,6 +28,7 @@
     font-weight: 400;
     text-align: center;
     margin-top: 25px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     
   }
 
@@ -53,12 +54,15 @@
 
   .link-btn {
     background: none;
-    color: white;
+    color: firebrick;
     text-decoration: underline;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
   }
   
   h2 {
     color: white;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
 
   ::placeholder {
