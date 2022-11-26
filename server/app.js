@@ -42,7 +42,6 @@ async function getDesc(recipes) {
 
 app.post('/getRecipes', async (req, res) => {
   const {name} = req.body
-
   const recipes = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${name}&apiKey=${key}`, {
     method: "GET"
   })
@@ -57,9 +56,9 @@ app.post('/getRecipes', async (req, res) => {
 })
 
 app.post('/getFoodMatches', async (req, res) => {
-  const {name} = req.body
+  const {ing} = req.body
 
-  const matches = await fetch(`https://api.spoonacular.com/food/ingredients/search?query=${name}&apiKey=623660a9d9954946acef1135e9683449`, {
+  const matches = await fetch(`https://api.spoonacular.com/food/ingredients/search?query=${ing}&apiKey=623660a9d9954946acef1135e9683449`, {
     method: "GET"
   })
   .then(res => res.json())
