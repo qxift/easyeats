@@ -7,11 +7,15 @@ function Fridge() {
 
   const [clickedRecipes, setClickedRecipes] = useState(false)
   const [clickedAddFood, setClickedAddFood] = useState(false)
+  const [showFoundIngretients, setShowFoundIngretients] = useState(false)
+  const [showRecipes, setShowRecipes] = useState(false)
   const [name, setName] = useState("")
+  const [ing, setIng] = useState("")
   const [amount, setAmount] = useState("")
   const [foodItems, setFoodItems] = useState([])
   const [recipes, setRecipes] = useState([])
   const [error, setError] = useState("")
+  
 
   useEffect(() => {
     
@@ -19,6 +23,12 @@ function Fridge() {
     // .then(response => response.json())
    
   }, [recipes])
+
+function appendFoodItems(name, id, image) {
+  setFoodItems(foodItems.concat({name: name, key: foodItems.length, id: id, image: image}))
+  setName(name)
+  setIng(name)
+}
 
 function clickRecipesHandler(e) {
   setClickedRecipes(prev => true)
@@ -60,10 +70,11 @@ function submitRecipesHandler(e) {
         }
     }) 
   setClickedRecipes(false)
+  setShowFoundIngretients(false)
+  setShowRecipes(true)
 }
 
 function submitAddFoodHandler(e) {
-  setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
   setError("")
   e.preventDefault()
   const recipes = fetch('http://localhost:3000/getFoodMatches', {
@@ -78,13 +89,14 @@ function submitAddFoodHandler(e) {
     if(res.recipes.length == 0) {
       setError("No recipes found for this ingredient")
     } else {
-      console.log(res.recipes.results)
       setRecipes(res.recipes.results)
       //setRecipes(res.recipes)
       //setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
         }
     }) 
   setClickedAddFood(false)
+  setShowRecipes(false)
+  setShowFoundIngretients(true)
 }
 
   return (
@@ -93,15 +105,15 @@ function submitAddFoodHandler(e) {
         <Col>
         <div>
         <CardImg src={`fridge.jpg`} alt="fridge" style={{height:500, width:800, top: 300, left: -50, position: "relative"}}/>
-        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:500, width:200, overflow:"scroll", top: -200, left: 330}}>
+        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:500, width:300, overflow:"scroll", top: -200, left: 330}}>
           <FlatList 
             
             numColumns={3}
             data={foodItems}
             renderItem={(item) => (
-            <Card>
+            <Card style={{height: 100, width: 90}}>
             <CardTitle>{item.item.name}</CardTitle>
-            <img height="50p" src={`https://spoonacular.com/cdn/ingredients_100x100/${item.item.name}.jpg`} alt="FoodIcon" />
+            <img height="50p" src={`https://spoonacular.com/cdn/ingredients_100x100/${item.item.image}`} alt="FoodIcon" />
             </Card>
             )}
             extraData={foodItems}
@@ -111,12 +123,44 @@ function submitAddFoodHandler(e) {
         </Col>
         <Col>
         <div style={{flexGrow: 0, height:500, width:400, overflow:"scroll"}}>
+        {showFoundIngretients?
+        
+        <>
+      {recipes && recipes.map(el => 
+
+        <>
+        <Col>
+        <label> {el.name} </label>
+        </Col>
+        <Col>
+        <img alt="food" src={"https://spoonacular.com/cdn/ingredients_100x100/" + el.image} style={{ width: "10" }} />
+        </Col>
+        <Col>
+        <Button onClick={() => appendFoodItems(el.name, el.is, el.image)}>
+          Add
+        </Button>
+        </Col>
+        </>
+
+      )}
+    </> 
+        :<>
+        </>
+          }
+          {showRecipes?
+        <Recipe recipes={recipes}/>
+        :<>
+        </>
+          }
+          
           {error? 
           <label style={{color:"red"}}>
           {error}
         </label>
-          : <Recipe recipes={recipes}/>
+          : <>
+          </>
           }
+
           </div>
         </Col>
         <Col>
@@ -124,11 +168,7 @@ function submitAddFoodHandler(e) {
           {clickedRecipes? 
             <Form onSubmit={submitRecipesHandler}>
               <FormGroup>
-                <Label>Food Name</Label>
-                <Input onChange={changeFoodRecipesHandler} className={"Name"} type="text" required/>
-              </FormGroup>
-              <FormGroup>
-                  <Label>Other Preferences</Label>
+                  <Label>Preferences</Label>
                   <Input type="select">
                     <option>Maximize used ingredients </option>
                     <option>Minimize missing ingredients</option>
