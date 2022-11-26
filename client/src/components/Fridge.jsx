@@ -105,13 +105,13 @@ function submitAddFoodHandler(e) {
         <Col>
         <div>
         <CardImg src={`fridge.jpg`} alt="fridge" style={{height:500, width:800, top: 300, left: -50, position: "relative"}}/>
-        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:500, width:200, overflow:"scroll", top: -200, left: 330}}>
+        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:500, width:300, overflow:"scroll", top: -200, left: 330}}>
           <FlatList 
             
             numColumns={3}
             data={foodItems}
             renderItem={(item) => (
-            <Card>
+            <Card style={{height: 100, width: 90}}>
             <CardTitle>{item.item.name}</CardTitle>
             <img height="50p" src={`https://spoonacular.com/cdn/ingredients_100x100/${item.item.image}`} alt="FoodIcon" />
             </Card>
