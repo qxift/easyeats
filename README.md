@@ -21,6 +21,8 @@ git clone https://github.com/qxift/easyeats.git
 8) in client start react
 ```run npm start```
 ```click y ```
+
+
 **the project uses an API with limited calls (150 per day)**
 **each recipe generation is 11 calls**
 **each food addition is at most another 10 calls**
