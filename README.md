@@ -1,4 +1,4 @@
-To set up this applications
+## To set up this applications
 
 1) clone the git repository
 git clone https://github.com/qxift/easyeats.git
