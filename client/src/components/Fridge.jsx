@@ -2,6 +2,7 @@ import { Container, Row, Col, Form, FormGroup, Label, Input, Card, CardTitle, Ca
 import Recipe from './Recipe';
 import { useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';//importing react-native might introduce errors, because of dependency conflict
+import { useHistory } from 'react-router-dom'
 
 function Fridge({cookies}) {
 
@@ -18,24 +19,30 @@ function Fridge({cookies}) {
   const [error, setError] = useState("")
   
 
-  useEffect(() => {
-    // console.log(cookies.name)
-    // fetch('http://localhost:3000/getInfo')
-    // .then(response => response.json())
+  const history = useHistory();   
+
+  // useEffect(() => {
+  //   // console.log(cookies.name)
+  //   // fetch('http://localhost:3000/getInfo')
+  //   // .then(response => response.json())
    
-  }, [])
+  // }, [])
 
   useEffect(() => {
-    fetch('http://localhost:3000/getFridge', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({username: cookies.name})
-    })
-    .then(res => res.json())
-    .then(res => setFoodItems(res.items))
-    // .then(response => response.json())
+    if (cookies.name) {
+      fetch('http://localhost:3000/getFridge', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({username: cookies.name})
+      })
+      .then(res => res.json())
+      .then(res => setFoodItems(res.items))
+      // .then(response => response.json())
+    } else {
+      history.push('/signIn')
+    }
   }, [])
 
 function appendFoodItems(name1, id, image) {

@@ -9,10 +9,11 @@ import { useCookies } from 'react-cookie';
 
 function App() {
   const [pmode, togglePMode] = useSwitch()
-  const [cookies, setCookie] = useCookies(['user']);
+  const [cookies, setCookie, removeCookie] = useCookies(['name']);
 
   return (
     <div className="App">
+      <button onClick={() => removeCookie('name', cookies.Name, { path: '/' })}>Logout</button>
       <button 
         style={{
           position: 'absolute',
@@ -22,9 +23,7 @@ function App() {
         onClick={() => togglePMode()}> {pmode ? 'Set to Light Mode' : 'Set to Dark Mode'}
       </button>
       <Router>
-        <Route exact path="/">
-          <SignUp text={"setCookie"}/>
-        </Route>
+        <Route exact path="/" component={() => <Fridge cookies={cookies} />} />
         <Route exact path="/signIn" component={() => <SignIn setCookie={setCookie} />} />
         <Route exact path="/signUp" component={() => <SignUp setCookie={setCookie} />} />
         <Route exact path="/fridge" component={() => <Fridge cookies={cookies} />} />
