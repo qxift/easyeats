@@ -3,7 +3,8 @@ import Recipe from './Recipe';
 import { useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';//importing react-native might introduce errors, because of dependency conflict
 import { useHistory } from 'react-router-dom'
-
+import './Fridge.css';
+import fridge_logo from './images/logo_title.png';
 function Fridge({cookies}) {
 
   const [clickedRecipes, setClickedRecipes] = useState(false)
@@ -153,6 +154,10 @@ function submitAddFoodHandler(e) {
 
   return (
     <>
+    
+    <img src={fridge_logo} id="logo"/>
+    
+    
       
         <Col>
         <div>
@@ -174,7 +179,7 @@ function submitAddFoodHandler(e) {
           </div>
         </Col>
         <Col>
-        <div style={{flexGrow: 0, height:500, width:400, overflow:"scroll"}}>
+        <div id="box" style={{flexGrow: 0, height:500, width:400, overflow:"scroll", scrollbarWidth:"none"}}>
         {showFoundIngretients?
           <div>
           {(recipes.length > 0)?

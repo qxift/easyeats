@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './SignUp.css';
 import { useCookies } from 'react-cookie';
-
+import fridge_logo from './images/logo_title.png';
 //import React, {useState} from "react";
 
 function SignUp({setCookie}){
@@ -47,7 +47,7 @@ function clickHandler(e) {
 }
   return (
      <div className="auth-form-container">
-      <h2>EasyEats</h2>
+      <img src={fridge_logo} style={{width:310 , marginTop: -70, marginBottom: -40, paddingRight: 12}}/>
      <Form className="signup-form" onSubmit={submitHandler}>
         <label htmlFor="username">Username</label>
         <input onChange={changeUserHandler} className={"username"} type="text" placeholder="name" id="username" name="username" required/>
