@@ -24,5 +24,7 @@ git clone https://github.com/qxift/easyeats.git
 
 
 **the project uses an API with limited calls (150 per day)**
+
 **each recipe generation is 11 calls**
+
 **each food addition is at most another 10 calls**
