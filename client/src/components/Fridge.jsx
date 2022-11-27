@@ -7,6 +7,7 @@ function Fridge() {
 
   const [clickedRecipes, setClickedRecipes] = useState(false)
   const [clickedAddFood, setClickedAddFood] = useState(false)
+  const [clickedDelete, setClickedDelete] = useState(false)
   const [showFoundIngretients, setShowFoundIngretients] = useState(false)
   const [showRecipes, setShowRecipes] = useState(false)
   const [name, setName] = useState("")
@@ -35,6 +36,30 @@ function appendFoodItems(name1, id, image) {
   console.log(names)
   setName(names)
   setIng(name1)
+}
+
+function clickFoodItem(item){
+  if(clickedDelete){
+    console.log(foodItems.findIndex((el) => {return item == el}))
+    foodItems.splice(foodItems.findIndex((el) => {return item == el}),1)
+    setFoodItems(foodItems)
+  }
+  let names = ""
+  if(foodItems.length > 0){
+    for(let i = 0; i < foodItems.length;i++){
+      names += "," + foodItems[i].name
+    }
+  }
+  setName(names)
+
+}
+
+function clickDeleteHandler(e) {
+  setClickedDelete(prev => true)
+}
+
+function clickStopDeleteHandler(e) {
+  setClickedDelete(prev => false)
 }
 
 function clickRecipesHandler(e) {
@@ -118,7 +143,7 @@ function submitAddFoodHandler(e) {
             numColumns={3}
             data={foodItems}
             renderItem={(item) => (
-            <Card style={{height: 100, width: 90}}>
+            <Card style={{height: 100, width: 90}} onClick={() => clickFoodItem(item.item)}>
             <CardTitle>{item.item.name}</CardTitle>
             <img height="50p" src={`https://spoonacular.com/cdn/ingredients_100x100/${item.item.image}`} alt="FoodIcon" />
             </Card>
@@ -212,6 +237,14 @@ function submitAddFoodHandler(e) {
             </Form> :
             <Button onClick={clickAddFoodHandler}>Add food</Button>}
           </Row>
+          <Row>
+          {clickedDelete? 
+            <Button onClick={clickStopDeleteHandler} style={{color: "red"}}>Stop Deletion</Button>
+            :
+            <Button onClick={clickDeleteHandler}>Delete Ingredients</Button>
+          }
+          </Row>
+          
         </Col>
       
       
