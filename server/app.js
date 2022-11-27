@@ -7,9 +7,7 @@ const path = require('path');
 const fileUpload = require('express-fileupload');
 const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors')
-const Item = require('../server/model/item');
 const User = require('../server/model/user');
-const Fridge = require('../server/model/fridge');
 const bcrypt = require('bcrypt');
 const fetch = require('node-fetch');
 // const fs = require('fs');
@@ -96,6 +94,20 @@ app.post('/signUp', async (req, res) => {
     res.json({user});
   }
 })
+
+app.post('/getFridge', async (req, res) => {
+  const {username} = req.body
+  const user = await User.findOne({ username }); 
+  if (user) {
+    // items = foodItems.map(el => el.name);
+    // newUser = await User.findOneAndUpdate({_id: user._id}, {items})
+    const items = user.items.map(el => {return {name: el}})
+    res.json({items});
+  } else {
+    res.sendStatus(400);
+  }
+})
+
 
 app.listen(3000, () => {
   console.log(`Server port 3000 is ready`);
