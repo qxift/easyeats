@@ -4,10 +4,13 @@ import SignUp from './components/SignUp'
 import SignIn from './components/SignIn'
 import Fridge from './components/Fridge'
 import useSwitch from "./components/Mode";
+import { useCookies } from 'react-cookie';
 
 
 function App() {
   const [pmode, togglePMode] = useSwitch()
+  const [cookies, setCookie] = useCookies(['user']);
+
   return (
     <div className="App">
       <button 
@@ -20,17 +23,11 @@ function App() {
       </button>
       <Router>
         <Route exact path="/">
-          <SignUp />
+          <SignUp text={"setCookie"}/>
         </Route>
-        <Route path="/signIn">
-          <SignIn />
-        </Route>
-        <Route path="/signUp">
-          <SignUp />
-        </Route>
-        <Route path="/fridge">
-          <Fridge />
-        </Route>
+        <Route exact path="/signIn" component={() => <SignIn setCookie={setCookie} />} />
+        <Route exact path="/signUp" component={() => <SignUp setCookie={setCookie} />} />
+        <Route exact path="/fridge" component={() => <Fridge cookies={cookies} />} />
       </Router>
     </div>
   );

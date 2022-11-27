@@ -2,13 +2,13 @@ import { Container, Row, Col, Form, FormGroup, Label, Input, CardImg, Button, Fo
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './SignUp.css';
+import { useCookies } from 'react-cookie';
+
 //import React, {useState} from "react";
 
-function SignUp(){
+function SignUp({setCookie}){
 
   const history = useHistory();   
-
-
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -23,23 +23,23 @@ function changePassHandler(e) {
   setPassword(e.target.value)
 }
 
-function submitHandler(e) {
+const submitHandler = async (e) => {
   e.preventDefault();  
 
-  fetch('http://localhost:3000/signUp', {
+  const res = await fetch('http://localhost:3000/signUp', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({username, password})
     })
-    .then(res => {
-      if (res.status == 200) {
-        history.push('/fridge')
-      } else {
-        setError("Username taken. Try another or sign in.")
-      }
-    })
+    if (res.status == 200) {
+      const user = await res.json()
+      setCookie('name', username, { path: '/' });
+      history.push('/fridge')
+    } else {
+      setError("Username taken. Try another or sign in.")
+    }
 }
 
 function clickHandler(e) {

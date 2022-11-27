@@ -3,7 +3,7 @@ import Recipe from './Recipe';
 import { useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';//importing react-native might introduce errors, because of dependency conflict
 
-function Fridge() {
+function Fridge({cookies}) {
 
   const [clickedRecipes, setClickedRecipes] = useState(false)
   const [clickedAddFood, setClickedAddFood] = useState(false)
@@ -14,11 +14,24 @@ function Fridge() {
   const [error, setError] = useState("")
 
   useEffect(() => {
-    
+    // console.log(cookies.name)
     // fetch('http://localhost:3000/getInfo')
     // .then(response => response.json())
    
-  }, [recipes])
+  }, [])
+
+  useEffect(() => {
+    fetch('http://localhost:3000/getFridge', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({username: cookies.name})
+    })
+    .then(res => res.json())
+    .then(res => setFoodItems(res.items))
+    // .then(response => response.json())
+  }, [])
 
 function clickRecipesHandler(e) {
   setClickedRecipes(prev => true)

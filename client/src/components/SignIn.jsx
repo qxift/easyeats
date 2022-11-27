@@ -1,8 +1,9 @@
 import { Container, Row, Col, Form, FormGroup, Label, Input, CardImg, Button } from 'reactstrap';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom'
+import { useCookies } from 'react-cookie';
 
-function SignIn() {
+function SignIn({setCookie}) {
 
   const history = useHistory();   
 
@@ -18,25 +19,24 @@ function SignIn() {
     setPassword(e.target.value)
   }
 
-  function submitHandler(e) {
+  const submitHandler = async (e) => {
     e.preventDefault()
-    fetch('http://localhost:3000/signIn', {
+    const res = await fetch('http://localhost:3000/signIn', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({username, password})
     })
-    .then(res => {
-      console.log(res);
-      if (res.status == 200) {
-        history.push('/fridge')
-      } else if (res.status == 401) {
-        setError("Incorrect password. Try again.")
-      } else {
-        setError("Username not found. Try again or sign up.")
-      }
-    })
+    if (res.status == 200) {
+      const user = await res.json()
+      setCookie('name', username, { path: '/' });
+      history.push('/fridge')
+    } else if (res.status == 401) {
+      setError("Incorrect password. Try again.")
+    } else {
+      setError("Username not found. Try again or sign up.")
+    }
   }
 
   function clickHandler(e) {
