@@ -22,7 +22,7 @@ git clone https://github.com/qxift/easyeats.git
 ```run npm start```
 ```click y ```
 
-
+## Important
 **the project uses an API with limited calls (150 per day)**
 
 **each recipe generation is 11 calls**
