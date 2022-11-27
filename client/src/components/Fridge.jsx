@@ -7,6 +7,7 @@ function Fridge() {
 
   const [clickedRecipes, setClickedRecipes] = useState(false)
   const [clickedAddFood, setClickedAddFood] = useState(false)
+  const [clickedDelete, setClickedDelete] = useState(false)
   const [showFoundIngretients, setShowFoundIngretients] = useState(false)
   const [showRecipes, setShowRecipes] = useState(false)
   const [name, setName] = useState("")
@@ -24,10 +25,41 @@ function Fridge() {
    
   }, [recipes])
 
-function appendFoodItems(name, id, image) {
-  setFoodItems(foodItems.concat({name: name, key: foodItems.length, id: id, image: image}))
-  setName(name)
-  setIng(name)
+function appendFoodItems(name1, id, image) {
+  let names = name1
+  if(foodItems.length > 0){
+    for(let i = 0; i < foodItems.length;i++){
+      names += "," + foodItems[i].name
+    }
+  }
+  setFoodItems(foodItems.concat({name: name1, key: foodItems.length, id: id, image: image}))
+  console.log(names)
+  setName(names)
+  setIng(name1)
+}
+
+function clickFoodItem(item){
+  if(clickedDelete){
+    console.log(foodItems.findIndex((el) => {return item == el}))
+    foodItems.splice(foodItems.findIndex((el) => {return item == el}),1)
+    setFoodItems(foodItems)
+  }
+  let names = ""
+  if(foodItems.length > 0){
+    for(let i = 0; i < foodItems.length;i++){
+      names += "," + foodItems[i].name
+    }
+  }
+  setName(names)
+
+}
+
+function clickDeleteHandler(e) {
+  setClickedDelete(prev => true)
+}
+
+function clickStopDeleteHandler(e) {
+  setClickedDelete(prev => false)
 }
 
 function clickRecipesHandler(e) {
@@ -43,7 +75,7 @@ function changeFoodRecipesHandler(e) {
 }
 
 function changeAddFoodHandler(e) {
-  setName(e.target.value)
+  setIng(e.target.value)
 }
 
 function changeAmountHandler(e) {
@@ -82,7 +114,7 @@ function submitAddFoodHandler(e) {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({name})
+    body: JSON.stringify({ing})
   })
   .then(res => res.json())
   .then(res => {
@@ -111,7 +143,7 @@ function submitAddFoodHandler(e) {
             numColumns={3}
             data={foodItems}
             renderItem={(item) => (
-            <Card style={{height: 100, width: 90}}>
+            <Card style={{height: 100, width: 90}} onClick={() => clickFoodItem(item.item)}>
             <CardTitle>{item.item.name}</CardTitle>
             <img height="50p" src={`https://spoonacular.com/cdn/ingredients_100x100/${item.item.image}`} alt="FoodIcon" />
             </Card>
@@ -124,42 +156,52 @@ function submitAddFoodHandler(e) {
         <Col>
         <div style={{flexGrow: 0, height:500, width:400, overflow:"scroll"}}>
         {showFoundIngretients?
-        
-        <>
-      {recipes && recipes.map(el => 
-
-        <>
-        <Col>
-        <label> {el.name} </label>
-        </Col>
-        <Col>
-        <img alt="food" src={"https://spoonacular.com/cdn/ingredients_100x100/" + el.image} style={{ width: "10" }} />
-        </Col>
-        <Col>
-        <Button onClick={() => appendFoodItems(el.name, el.is, el.image)}>
-          Add
-        </Button>
-        </Col>
-        </>
-
-      )}
-    </> 
-        :<>
-        </>
+          <div>
+          {(recipes.length > 0)?
+            <>
+            {recipes && recipes.map(el => 
+            <>
+            <Col>
+            <label> {el.name} </label>
+            </Col>
+            <Col>
+            <img alt="food" src={"https://spoonacular.com/cdn/ingredients_100x100/" + el.image} style={{ width: "10" }} />
+            </Col>
+            <Col>
+            <Button onClick={() => appendFoodItems(el.name, el.is, el.image)}>
+            Add
+            </Button>
+            </Col>
+            </>)
+            }
+            </>
+          :
+            <label style={{color:"red"}}>
+            No ingredients found with this name
+            </label>
           }
+          </div>
+        :
+          <div>
           {showRecipes?
-        <Recipe recipes={recipes}/>
-        :<>
-        </>
+            <Recipe recipes={recipes}/>
+          :
+            <div>
+            {error? 
+              <label style={{color:"red"}}>
+              {error}
+              </label>
+            : 
+              <>
+              </>
+            }
+            </div>
           }
+          </div>
+      }
+ 
           
-          {error? 
-          <label style={{color:"red"}}>
-          {error}
-        </label>
-          : <>
-          </>
-          }
+          
 
           </div>
         </Col>
@@ -180,9 +222,9 @@ function submitAddFoodHandler(e) {
                     Ignore typical pantry items, such as water, salt, flour, etc.
                   </Label>
                 </FormGroup>
-              <Button>Add</Button>
+              <Button>Show Recipes</Button>
             </Form> :
-            <Button onClick={clickRecipesHandler}>Get Recipes</Button>}
+            <Button onClick={clickRecipesHandler}>Find Recipes</Button>}
           </Row>
           <Row>
           {clickedAddFood? 
@@ -195,6 +237,14 @@ function submitAddFoodHandler(e) {
             </Form> :
             <Button onClick={clickAddFoodHandler}>Add food</Button>}
           </Row>
+          <Row>
+          {clickedDelete? 
+            <Button onClick={clickStopDeleteHandler} style={{color: "red"}}>Stop Deletion</Button>
+            :
+            <Button onClick={clickDeleteHandler}>Delete Ingredients</Button>
+          }
+          </Row>
+          
         </Col>
       
       
