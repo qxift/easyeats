@@ -9,3 +9,29 @@
     background-color: coral;
     overflow: visible;
   }
+
+#logo {
+    top: 0;
+    left: 0;
+    width: 22%;
+    position: absolute;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+
+  
+  #box::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+  }
+ #box {
+    background: rgba(61, 163, 194, 0.4);
+    border-radius: 25px;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow: scroll; 
+ }
+
+ 
