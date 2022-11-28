@@ -12,9 +12,9 @@ function Recipe({recipes}) {
     <>
       {recipes && recipes.map(el => 
       <Card>
-        <img alt="food" src={el.image} style={{ width: "20pc" }}/>
+        <img alt="food" src={el.image} style={{ width: "12pc" }}/>
         <CardBody>
-          <CardTitle tag="h5">
+          <CardTitle tag="h5" style={{color: "white", fontFamily:"'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif" }}>
             {el.title}
           </CardTitle>
             {el.summary}
