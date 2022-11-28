@@ -161,8 +161,8 @@ function submitAddFoodHandler(e) {
       
         <Col>
         <div>
-        <CardImg src={`fridge.jpg`} alt="fridge" style={{height:500, width:800, top: 300, left: -50, position: "relative"}}/>
-        <View style={{flexGrow: 0, backgroundImage:"fridge.jpg", height:500, width:300, overflow:"scroll", top: -200, left: 330}}>
+        <CardImg src={`fridgefridge.png`} alt="fridge" style={{height:600, width:600, top: 300, left: 55, position: "relative"}}/>
+        <View style={{flexGrow: 0, backgroundImage:"fridgefridge.png", height:500, width:300, overflow:"scroll", top: -200, left: 330}}>
           <FlatList 
             
             numColumns={3}
@@ -179,7 +179,7 @@ function submitAddFoodHandler(e) {
           </div>
         </Col>
         <Col>
-        <div id="box" style={{flexGrow: 0, height:500, width:400, overflow:"scroll", scrollbarWidth:"none"}}>
+        <div id="box" style={{flexGrow: 0, height:500, width:350, top: 70, left: 10, position: "relative", overflow:"scroll", scrollbarWidth:"none"}}>
         {showFoundIngretients?
           <div>
           {(recipes.length > 0)?

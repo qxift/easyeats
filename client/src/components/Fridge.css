@@ -28,10 +28,10 @@
   }
  #box {
     background: rgba(61, 163, 194, 0.4);
-    border-radius: 25px;
+    border-radius: 55px;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
-    overflow: scroll; 
+    overflow: scroll;
  }
 
  
