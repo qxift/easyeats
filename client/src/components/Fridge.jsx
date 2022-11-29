@@ -1,15 +1,17 @@
-import { Container, Row, Col, Form, FormGroup, Label, Input, Card, CardTitle, CardImg, Button } from 'reactstrap';
+import { Container, Spinner, Row, Col, Form, FormGroup, Label, Input, Card, CardTitle, CardImg, Button } from 'reactstrap';
 import Recipe from './Recipe';
 import { useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';//importing react-native might introduce errors, because of dependency conflict
 import { useHistory } from 'react-router-dom'
 import './Fridge.css';
 import fridge_logo from './images/logo_title.png';
+
 function Fridge({cookies}) {
 
   const [clickedRecipes, setClickedRecipes] = useState(false)
   const [clickedAddFood, setClickedAddFood] = useState(false)
   const [clickedDelete, setClickedDelete] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [showFoundIngretients, setShowFoundIngretients] = useState(false)
   const [showRecipes, setShowRecipes] = useState(false)
   const [name, setName] = useState("")
@@ -19,15 +21,23 @@ function Fridge({cookies}) {
   const [recipes, setRecipes] = useState([])
   const [error, setError] = useState("")
   
-
   const history = useHistory();   
 
-  // useEffect(() => {
-  //   // console.log(cookies.name)
-  //   // fetch('http://localhost:3000/getInfo')
-  //   // .then(response => response.json())
-   
-  // }, [])
+  useEffect(() => {
+    if (cookies.name) {
+      fetch('http://localhost:3000/addToFridge', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({username: cookies.name, items: foodItems})
+      })
+      .then(res => res.json())
+      // .then(response => response.json())
+    } else {
+      history.push('/signIn')
+    }
+  }, [foodItems])
 
   useEffect(() => {
     if (cookies.name) {
@@ -36,11 +46,10 @@ function Fridge({cookies}) {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({username: cookies.name})
+        body: JSON.stringify({username: cookies.name, items: foodItems})
       })
       .then(res => res.json())
       .then(res => setFoodItems(res.items))
-      // .then(response => response.json())
     } else {
       history.push('/signIn')
     }
@@ -59,11 +68,24 @@ function appendFoodItems(name1, id, image) {
   setIng(name1)
 }
 
-function clickFoodItem(item){
+const clickFoodItem = async (item) => {
   if(clickedDelete){
-    console.log(foodItems.findIndex((el) => {return item == el}))
-    foodItems.splice(foodItems.findIndex((el) => {return item == el}),1)
-    setFoodItems(foodItems)
+    const newFoodItems = foodItems
+    newFoodItems.splice(foodItems.findIndex((el) => {return item == el}),1)
+    setFoodItems(newFoodItems)
+
+    const res = await fetch('http://localhost:3000/addToFridge', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({username: cookies.name, items: newFoodItems})
+      })
+      if (res.satus == 200) {
+        const resp = await res.json()
+      } else {
+        //set error
+      }
   }
   let names = ""
   if(foodItems.length > 0){
@@ -77,6 +99,8 @@ function clickFoodItem(item){
 
 function clickDeleteHandler(e) {
   setClickedDelete(prev => true)
+  setClickedAddFood(false)
+  setClickedRecipes(false)
 }
 
 function clickStopDeleteHandler(e) {
@@ -84,10 +108,14 @@ function clickStopDeleteHandler(e) {
 }
 
 function clickRecipesHandler(e) {
+  setClickedDelete(false)
+  setClickedAddFood(false)
   setClickedRecipes(prev => true)
 }
 
 function clickAddFoodHandler(e) {
+  setClickedDelete(false)
+  setClickedRecipes(false)
   setClickedAddFood(prev => true)
 }
 
@@ -104,17 +132,21 @@ function changeAmountHandler(e) {
 }
 
 function submitRecipesHandler(e) {
-  setError("")
   e.preventDefault()
+  setLoading(true)
+  setRecipes([])
+  setError("")
+  if(foodItems.length > 0){
   const recipes = fetch('http://localhost:3000/getRecipes', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({name})
+    body: JSON.stringify({username: cookies.name,})
   })
   .then(res => res.json())
   .then(res => {
+    setLoading(false)
     if(res.recipes.length == 0) {
       setError("No recipes found for this ingredient")
     } else {
@@ -122,6 +154,7 @@ function submitRecipesHandler(e) {
       //setFoodItems(foodItems.concat({name: name, key: foodItems.length}))
         }
     }) 
+  }
   setClickedRecipes(false)
   setShowFoundIngretients(false)
   setShowRecipes(true)
@@ -130,6 +163,7 @@ function submitRecipesHandler(e) {
 function submitAddFoodHandler(e) {
   setError("")
   e.preventDefault()
+  setLoading(true)
   const recipes = fetch('http://localhost:3000/getFoodMatches', {
     method: "POST",
     headers: {
@@ -139,6 +173,7 @@ function submitAddFoodHandler(e) {
   })
   .then(res => res.json())
   .then(res => {
+    setLoading(false)
     if(res.recipes.length == 0) {
       setError("No recipes found for this ingredient")
     } else {
@@ -168,7 +203,7 @@ function submitAddFoodHandler(e) {
             numColumns={3}
             data={foodItems}
             renderItem={(item) => (
-            <Card style={{height: 100, width: 90}} onClick={() => clickFoodItem(item.item)}>
+            <Card style={{height: 100, width: 90, filter: clickedDelete? "brightness(50%)": "brightness(100%)"}} onClick={() => clickFoodItem(item.item)}>
             <CardTitle>{item.item.name}</CardTitle>
             <img height="50p" src={`https://spoonacular.com/cdn/ingredients_100x100/${item.item.image}`} alt="FoodIcon" />
             </Card>
@@ -179,8 +214,15 @@ function submitAddFoodHandler(e) {
           </div>
         </Col>
         <Col>
+        <Spinner style= {{zindex: 999}} color="warning" />
         <div id="box" style={{flexGrow: 0, height:500, width:350, top: 70, left: 10, position: "relative", overflow:"scroll", scrollbarWidth:"none"}}>
         {showFoundIngretients?
+                <div>
+                {loading?
+                <label style={{color:"SteelBlue"}}>
+                Loading
+                </label>
+                :
           <div>
           {(recipes.length > 0)?
             <>
@@ -190,7 +232,7 @@ function submitAddFoodHandler(e) {
             <label> {el.name} </label>
             </Col>
             <Col>
-            <img alt="food" src={"https://spoonacular.com/cdn/ingredients_100x100/" + el.image} style={{ width: "10" }} />
+            <img alt="food" src={"https://spoonacular.com/cdn/ingredients_100x100/" + el.image} style={{ width: "100px" }} />
             </Col>
             <Col>
             <Button onClick={() => appendFoodItems(el.name, el.is, el.image)}>
@@ -206,10 +248,30 @@ function submitAddFoodHandler(e) {
             </label>
           }
           </div>
+          }
+        </div>
         :
           <div>
           {showRecipes?
+            <div>
+            {loading?
+            <label style={{color:"SteelBlue"}}>
+            Loading
+           </label>
+            :
+              <div>
+              {(recipes.length > 0)?
             <Recipe recipes={recipes}/>
+            :
+            <label style={{color:"red"}}>
+              No recipes found
+            </label>
+            
+            }
+            </div>
+            }
+
+            </div>
           :
             <div>
             {error? 
@@ -232,6 +294,25 @@ function submitAddFoodHandler(e) {
         </Col>
         <Col>
           <Row>
+          {clickedAddFood? 
+            <Form onSubmit={submitAddFoodHandler}>
+              <FormGroup>
+                <Label>Food name</Label>
+                <Input onChange={changeAddFoodHandler} className={"Name"} type="text" required/>
+              </FormGroup>
+              <Button>Add</Button>
+            </Form> :
+            <Button onClick={clickAddFoodHandler}>Add Item</Button>}
+          </Row>
+          <Row>
+          {clickedDelete? 
+            <Button onClick={clickStopDeleteHandler} style={{color: "red"}}>Stop Deletion</Button>
+            :
+            <Button onClick={clickDeleteHandler}>Delete Ingredients</Button>
+          }
+          </Row>
+          
+          <Row>
           {clickedRecipes? 
             <Form onSubmit={submitRecipesHandler}>
               <FormGroup>
@@ -251,25 +332,6 @@ function submitAddFoodHandler(e) {
             </Form> :
             <Button onClick={clickRecipesHandler}>Find Recipes</Button>}
           </Row>
-          <Row>
-          {clickedAddFood? 
-            <Form onSubmit={submitAddFoodHandler}>
-              <FormGroup>
-                <Label>Food name</Label>
-                <Input onChange={changeAddFoodHandler} className={"Name"} type="text" required/>
-              </FormGroup>
-              <Button>Add</Button>
-            </Form> :
-            <Button onClick={clickAddFoodHandler}>Add food</Button>}
-          </Row>
-          <Row>
-          {clickedDelete? 
-            <Button onClick={clickStopDeleteHandler} style={{color: "red"}}>Stop Deletion</Button>
-            :
-            <Button onClick={clickDeleteHandler}>Delete Ingredients</Button>
-          }
-          </Row>
-          
         </Col>
       
       

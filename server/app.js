@@ -38,29 +38,37 @@ async function getDesc(recipes) {
   return descArr
 }
 
-app.post('/getRecipes', async (req, res) => {
-  const {name} = req.body
-  const recipes = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${name}&apiKey=${key}`, {
-    method: "GET"
-  })
-  .then(res => res.json())
 
-  if (recipes) {
-    const descArr = await getDesc(recipes)
-    res.json({recipes: descArr})
+app.post('/getRecipes', async (req, res) => {
+  const {username} = req.body  
+  const user = await User.findOne({ username }); 
+  if (user) {
+    const items = user.items.join(",")
+    const recipes = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${items}&apiKey=${key}`, {
+      method: "GET"
+    })
+    .then(res => res.json())
+    
+    if (recipes) {
+      const descArr = await getDesc(recipes)
+      res.json({recipes: descArr})
+    } else {
+      res.sendStatus(400)
+    }
   } else {
-    res.sendStatus(400)
+    res.sendStatus(402);
   }
+
 })
 
 app.post('/getFoodMatches', async (req, res) => {
   const {ing} = req.body
-
+  
   const matches = await fetch(`https://api.spoonacular.com/food/ingredients/search?query=${ing}&apiKey=623660a9d9954946acef1135e9683449`, {
     method: "GET"
   })
   .then(res => res.json())
-
+  
   if (1 == 1) {
     res.json({recipes: matches})
   } else {
@@ -99,15 +107,22 @@ app.post('/getFridge', async (req, res) => {
   const {username} = req.body
   const user = await User.findOne({ username }); 
   if (user) {
-    // items = foodItems.map(el => el.name);
-    // newUser = await User.findOneAndUpdate({_id: user._id}, {items})
-    const items = user.items.map(el => {return {name: el}})
-    res.json({items});
+    res.json({items: user.items});
   } else {
     res.sendStatus(400);
   }
 })
 
+app.post('/addToFridge', async (req, res) => {
+  const {username, items} = req.body
+  const user = await User.findOne({ username }); 
+  if (user) {
+    newUser = await User.findOneAndUpdate({_id: user._id}, {items})
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(400);
+  }
+})
 
 app.listen(3000, () => {
   console.log(`Server port 3000 is ready`);

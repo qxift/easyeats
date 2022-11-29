@@ -5,7 +5,6 @@ import { Card, CardBody, CardTitle, CardSubtitle, CardText, Button } from 'react
 function Recipe({recipes}) {
   
   useEffect(() => {
-    
   }, [])
 
   return (
