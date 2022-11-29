@@ -40,11 +40,19 @@ async function getDesc(recipes) {
 
 
 app.post('/getRecipes', async (req, res) => {
-  const {username} = req.body  
+  const {username, maximize, ignorePantry} = req.body 
+
+  let max_int = 0
+  if (maximize == "Maximize used ingredients") {
+    max_int = 1
+  } else {
+    max_int = 2
+  }
   const user = await User.findOne({ username }); 
   if (user) {
-    const items = user.items.join(",")
-    const recipes = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${items}&apiKey=${key}`, {
+    const items = user.items.map(el => el.name).join(",")
+    console.log(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${items}&ignorePantry=${ignorePantry}&ranking=${max_int}&apiKey=${key}`)
+    const recipes = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${items}&ignorePantry=${ignorePantry}&ranking=${max_int}&apiKey=${key}`, {
       method: "GET"
     })
     .then(res => res.json())

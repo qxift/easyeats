@@ -20,6 +20,8 @@ function Fridge({cookies}) {
   const [foodItems, setFoodItems] = useState([])
   const [recipes, setRecipes] = useState([])
   const [error, setError] = useState("")
+  const [ignorePantry, setIgnorePantry] = useState(false)
+  const [maximize, setMaximizeUsed] = useState("Maximize used ingredients")
   
   const history = useHistory();   
 
@@ -108,6 +110,8 @@ function clickStopDeleteHandler(e) {
 }
 
 function clickRecipesHandler(e) {
+  setIgnorePantry(false)
+  setMaximizeUsed("Maximize used ingredients")
   setClickedDelete(false)
   setClickedAddFood(false)
   setClickedRecipes(prev => true)
@@ -142,7 +146,7 @@ function submitRecipesHandler(e) {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({username: cookies.name,})
+    body: JSON.stringify({username: cookies.name, maximize, ignorePantry})
   })
   .then(res => res.json())
   .then(res => {
@@ -317,14 +321,14 @@ function submitAddFoodHandler(e) {
             <Form onSubmit={submitRecipesHandler}>
               <FormGroup>
                   <Label>Preferences</Label>
-                  <Input type="select">
-                    <option>Maximize used ingredients </option>
+                  <Input onChange={(e) => setMaximizeUsed(e.target.value)} type="select">
+                    <option>Maximize used ingredients</option>
                     <option>Minimize missing ingredients</option>
                   </Input>
                 </FormGroup>
                 <FormGroup check>
                   <Label check>
-                    <Input type="checkbox" />{' '}
+                    <Input onClick={(e) => setIgnorePantry(prev => !prev)} type="checkbox" />{' '}
                     Ignore typical pantry items, such as water, salt, flour, etc.
                   </Label>
                 </FormGroup>
