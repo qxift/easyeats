@@ -34,8 +34,39 @@
     overflow: scroll;
  }
 
+#add{
+  margin-top:15px;
+}
+
+#recipes
+{
+margin-left:100px;
+}
+
+#foodbar{
+margin-left:50px;
+}
+
+#maxin{
+  margin-left: 165px;
+  width:250px;
+}
+
+#checkbox1{
+  margin-left:70px;
+}
+
+#items{
+  font-size:18px;
+}
 h5 {
 
 font-size: 25px;
 
+}
+
+#pref{
+  margin-left: 100px;
+  color:white;
+  margin-top: 35px;
 }

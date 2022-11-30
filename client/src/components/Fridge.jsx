@@ -239,7 +239,7 @@ function submitAddFoodHandler(e) {
             <img alt="food" src={"https://spoonacular.com/cdn/ingredients_100x100/" + el.image} style={{ width: "100px" }} />
             </Col>
             <Col>
-            <Button onClick={() => appendFoodItems(el.name, el.is, el.image)}>
+            <Button id="add" onClick={() => appendFoodItems(el.name, el.is, el.image)}>
             Add
             </Button>
             </Col>
@@ -260,7 +260,7 @@ function submitAddFoodHandler(e) {
             <div>
             {loading?
             <label style={{color:"SteelBlue"}}>
-            Loading
+            Loading...
            </label>
             :
               <div>
@@ -301,18 +301,18 @@ function submitAddFoodHandler(e) {
           {clickedAddFood? 
             <Form onSubmit={submitAddFoodHandler}>
               <FormGroup>
-                <Label>Food name</Label>
-                <Input onChange={changeAddFoodHandler} className={"Name"} type="text" required/>
+                <Label id="recipes">Food name</Label>
+                <Input id="foodbar"onChange={changeAddFoodHandler} className={"Name"} type="text" required/>
               </FormGroup>
-              <Button>Add</Button>
+              <Button id ="recipes">Add</Button>
             </Form> :
-            <Button onClick={clickAddFoodHandler}>Add Item</Button>}
+            <Button id="recipes"onClick={clickAddFoodHandler}>Add Item</Button>}
           </Row>
           <Row>
           {clickedDelete? 
-            <Button onClick={clickStopDeleteHandler} style={{color: "red"}}>Stop Deletion</Button>
+            <Button id ="recipes" onClick={clickStopDeleteHandler} style={{color: "red"}}>Stop Deletion</Button>
             :
-            <Button onClick={clickDeleteHandler}>Delete Ingredients</Button>
+            <Button id ="recipes" onClick={clickDeleteHandler}>Delete Ingredients</Button>
           }
           </Row>
           
@@ -320,21 +320,21 @@ function submitAddFoodHandler(e) {
           {clickedRecipes? 
             <Form onSubmit={submitRecipesHandler}>
               <FormGroup>
-                  <Label>Preferences</Label>
-                  <Input onChange={(e) => setMaximizeUsed(e.target.value)} type="select">
+                  <Label id ="pref">Preferences</Label>
+                  <Input id="maxin" onChange={(e) => setMaximizeUsed(e.target.value)} type="select">
                     <option>Maximize used ingredients</option>
                     <option>Minimize missing ingredients</option>
                   </Input>
                 </FormGroup>
                 <FormGroup check>
                   <Label check>
-                    <Input onClick={(e) => setIgnorePantry(prev => !prev)} type="checkbox" />{' '}
-                    Ignore typical pantry items, such as water, salt, flour, etc.
+                    <Input id="checkbox1"onClick={(e) => setIgnorePantry(prev => !prev)} type="checkbox" />{' '}
+                    <a id="items">Ignore pantry items like water, salt, flour, etc.</a>
                   </Label>
                 </FormGroup>
-              <Button>Show Recipes</Button>
+              <Button id="recipes">Show Recipes</Button>
             </Form> :
-            <Button onClick={clickRecipesHandler}>Find Recipes</Button>}
+            <Button id="recipes" onClick={clickRecipesHandler}>Find Recipes</Button>}
           </Row>
         </Col>
       
