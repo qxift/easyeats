@@ -1,26 +1,26 @@
 ## To set up this applications
 
-1) clone the git repository
+1) Clone the git repository
 git clone https://github.com/qxift/easyeats.git
 
-2) navigate to the easyeats folder
+2) Navigate to the easyeats folder
 
-3) in the easyeats folder, navigate to the server folder
+3) In the easyeats folder, navigate to the server folder
 
-4) in server install dependencies
+4) In server install dependencies
 ```run npm i```
 
-5) in server start the server
+5) In server start the server
 ```run node app.js```
 
-6) in the easyeats folder, navigate to the client folder
+6) In the easyeats folder, navigate to the client folder
 
-7) in client install dependencies
+7) In client install dependencies
 ```run npm i```
 
-8) in client start react
+8) In client start react
 ```run npm start```
-to confirm running on a new port
+. To confirm running on a new port
 ```click y ```
 
 ## Important
@@ -28,8 +28,8 @@ to confirm running on a new port
 
 **It will work on UCLA_WIFI and any other network with reliable connection**
 
-**2) the project uses an API with limited calls (150 per day)**
+**2) The project uses an API with limited calls (150 per day)**
 
-**each recipe generation is 11 calls**
+**Each recipe generation is 11 calls**
 
-**each food addition is at most another 2 calls**
+**Each food addition is at most another 2 calls**
