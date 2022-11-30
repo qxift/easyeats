@@ -20,11 +20,16 @@ git clone https://github.com/qxift/easyeats.git
 
 8) in client start react
 ```run npm start```
+to confirm running on a new port
 ```click y ```
 
 ## Important
-**the project uses an API with limited calls (150 per day)**
+**1) MongoDB doesnt connect on very slow wifi or UCLA_WEB network**
+
+**It will work on UCLA_WIFI and any other network with reliable connection**
+
+**2) the project uses an API with limited calls (150 per day)**
 
 **each recipe generation is 11 calls**
 
-**each food addition is at most another 10 calls**
+**each food addition is at most another 2 calls**

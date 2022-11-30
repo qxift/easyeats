@@ -159,6 +159,9 @@ function submitRecipesHandler(e) {
         }
     }) 
   }
+  else{
+    setLoading(false)
+  }
   setClickedRecipes(false)
   setShowFoundIngretients(false)
   setShowRecipes(true)
