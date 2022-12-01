@@ -4,10 +4,25 @@
   min-height: 100vh;
   align-items: center;
  justify-content: center;
- background-color: lightblue;
+ background-color: var(--background);
 }
 
-
+body.light{
+  --colors : firebrick;
+  --borders : rgb(100, 186, 221);
+  --background : lightblue;
+  --back : rgba(76, 201, 243, 0.4);
+  --label : white;
+  --in: blue;
+}
+body.dark{
+  --colors : rgb(202, 114, 114);
+  --borders:rgb(32, 64, 75);
+  --background : rgb(11, 8, 103);
+  --back : rgba(69, 171, 205, 0.4);
+  --label : white;
+  --in: rgb(60, 60, 214);
+}
 .auth-form-container, .signup-form {
   display: flex;
   flex-direction: column;
@@ -15,15 +30,15 @@
 
 .auth-form-container {
   padding: 5.5rem;
-  border: 5px solid rgb(100, 186, 221);
+  border: 5px solid var(--borders);
   border-radius: 10px;
-  background-color: rgba(76, 201, 243, 0.4);
+  background-color: var(--back);
   
 }
   
 
   label {
-    color: white;
+    color: var(--label);
     font-size: 20px;
     font-weight: 400;
     text-align: center;
@@ -35,34 +50,34 @@
   input {
     margin: -.4rem 0;
     padding: 1rem;
-    border: 1px solid blue;
+    border: 1px solid var(--in);
     border-radius: 10px;
   }
 
   button {
     border: none;
-    background-color: white;
+    background-color: var(--label);
     padding: 15px;
     border-radius: 8px;
     margin-top: 59px;
     position: relative;
     font-size: 15px;
     cursor: pointer;
-    color: lightblue;
+    color: var(--background);
     font-weight: bold;
 
   }
 
   .link-btn {
     background: none;
-    color: firebrick;
+    color: var(--colors);
     text-decoration: underline;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 
   }
   
   h2 {
-    color: white;
+    color: var(--label);
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     /*outline: 5px dotted whitesmoke;*/
   }

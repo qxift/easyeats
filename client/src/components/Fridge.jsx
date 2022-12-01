@@ -50,7 +50,7 @@ function Fridge({cookies}) {
         },
         body: JSON.stringify({username: cookies.name, items: foodItems})
       })
-      .then(res => res.json())
+      .then(res => res.json()) 
       .then(res => setFoodItems(res.items))
     } else {
       history.push('/signIn')

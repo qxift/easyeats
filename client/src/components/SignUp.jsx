@@ -1,13 +1,14 @@
 import { Container, Row, Col, Form, FormGroup, Label, Input, CardImg, Button, FormText } from 'reactstrap';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import useSwitch from './Mode'
 import './SignUp.css';
 import { useCookies } from 'react-cookie';
 import fridge_logo from './images/logo_title.png';
 //import React, {useState} from "react";
 
 function SignUp({setCookie}){
-
+  const [pmode, togglePMode] = useSwitch();
   const history = useHistory();   
 
   const [username, setUsername] = useState("")
