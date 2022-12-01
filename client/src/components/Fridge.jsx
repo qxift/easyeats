@@ -222,7 +222,7 @@ function submitAddFoodHandler(e) {
         </Col>
         <Col>
         <Spinner style= {{zindex: 999}} color="warning" />
-        <div id="box" style={{flexGrow: 0, height:500, width:350, top: 70, left: 10, position: "relative", overflow:"scroll", scrollbarWidth:"none"}}>
+        <div id="box" style={{flexGrow: 0, height:500, width:450, top: 70, left: 10, position: "relative", overflow:"scroll", scrollbarWidth:"none"}}>
         {showFoundIngretients?
                 <div>
                 {loading?
@@ -309,7 +309,7 @@ function submitAddFoodHandler(e) {
               </FormGroup>
               <Button id ="recipes">Add</Button>
             </Form> :
-            <Button id="recipes"onClick={clickAddFoodHandler}>Add Item</Button>}
+            <Button style={{top: clickedRecipes? "30px" : "-50px"}} id="recipes"onClick={clickAddFoodHandler}>Add Item</Button>}
           </Row>
           <Row>
           {clickedDelete? 
@@ -320,6 +320,11 @@ function submitAddFoodHandler(e) {
           </Row>
           
           <Row>
+      {clickedRecipes &&
+        <> 
+            <br></br>
+            <br></br>
+        </>}
           {clickedRecipes? 
             <Form onSubmit={submitRecipesHandler}>
               <FormGroup>
@@ -331,13 +336,13 @@ function submitAddFoodHandler(e) {
                 </FormGroup>
                 <FormGroup check>
                   <Label check>
-                    <Input id="checkbox1"onClick={(e) => setIgnorePantry(prev => !prev)} type="checkbox" />{' '}
-                    <a id="items">Ignore pantry items like water, salt, flour, etc.</a>
+                    <Input id="checkbox1" onClick={(e) => setIgnorePantry(prev => !prev)} type="checkbox" />{' '}
+                    <span id="items">Ignore pantry items</span>
                   </Label>
                 </FormGroup>
               <Button id="recipes">Show Recipes</Button>
             </Form> :
-            <Button id="recipes" onClick={clickRecipesHandler}>Find Recipes</Button>}
+            <Button style={{top: "50px"}} id="recipes" onClick={clickRecipesHandler}>Find Recipes</Button>}
           </Row>
         </Col>
       

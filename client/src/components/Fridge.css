@@ -44,21 +44,24 @@ margin-left:100px;
 }
 
 #foodbar{
-margin-left:50px;
+margin-left:100px;
+max-width: 150px
 }
 
 #maxin{
-  margin-left: 165px;
-  width:250px;
+  margin-left: 115px;
+  width:200px;
 }
 
 #checkbox1{
-  margin-left:70px;
+  margin-left:100px;
 }
 
 #items{
   font-size:18px;
+  color:steelblue
 }
+
 h5 {
 
 font-size: 25px;
