@@ -50,7 +50,7 @@ max-width: 150px
 
 #maxin{
   margin-left: 115px;
-  width:200px;
+  width:225px;
 }
 
 #checkbox1{
@@ -59,7 +59,7 @@ max-width: 150px
 
 #items{
   font-size:18px;
-  color:steelblue
+  color:steelblue;
 }
 
 h5 {
