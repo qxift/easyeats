@@ -20,7 +20,7 @@ body.dark{
   --borders:rgb(32, 64, 75);
   --background : rgb(11, 8, 103);
   --back : rgba(69, 171, 205, 0.4);
-  --label : white;
+  --label : darkgrey;
   --in: rgb(60, 60, 214);
 }
 .auth-form-container, .signup-form {
@@ -51,6 +51,7 @@ body.dark{
     margin: -.4rem 0;
     padding: 1rem;
     border: 1px solid var(--in);
+    background-color: var(--label);
     border-radius: 10px;
   }
 
