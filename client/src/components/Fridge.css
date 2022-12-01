@@ -2,11 +2,18 @@
     height: 200px;
     width: 200px;
 }
-
+body.light{
+--backg : coral;
+--box : rgba(61, 163, 194, 0.4);
+}
+body.dark{
+--backg : rgb(203, 89, 48);
+--box : rgba(40, 108, 129, 0.4);
+}
 .my {
     width: 200px;
     height: 65px;
-    background-color: coral;
+    background-color: var(--backg);
     overflow: visible;
   }
 
