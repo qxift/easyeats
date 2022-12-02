@@ -58,6 +58,7 @@ function Fridge({cookies}) {
   }, [])
 
 function appendFoodItems(name1, id, image) {
+  if(foodItems.find((el) => {return name1 == el.name})){return}
   let names = name1
   if(foodItems.length > 0){
     for(let i = 0; i < foodItems.length;i++){
@@ -202,9 +203,9 @@ function submitAddFoodHandler(e) {
     
       
         <Col>
-        <div>
-        <CardImg src={`fridgefridge.png`} alt="fridge" style={{height:600, width:600, top: 300, left: 55, position: "relative"}}/>
-        <View style={{flexGrow: 0, backgroundImage:"fridgefridge.png", height:500, width:300, overflow:"scroll", top: -200, left: 330}}>
+        <div style={{height:700}}>
+        <CardImg src={`fridgefridge.png`} alt="fridge" style={{height:600, width:600, top: 100, left: 35, position: "relative"}}/>
+        <View style={{flexGrow: 0, height:500, width:300, overflow:"scroll", top: -400, left: 300, position: "relative"}}>
           <FlatList 
             
             numColumns={3}
