@@ -7,21 +7,21 @@ git clone https://github.com/qxift/easyeats.git
 
 3) In the easyeats folder, navigate to the server folder
 
-4) In server install dependencies
-```run npm i```
+4) In server install dependencies by
+```npm i```
 
-5) In server start the server
-```run node app.js```
+5) In server start the server by
+```node app.js```
 
 6) In the easyeats folder, navigate to the client folder
 
-7) In client install dependencies
-```run npm i```
+7) In client install dependencies by
+```npm i```
 
-8) In client start react
-```run npm start```
-. To confirm running on a new port
-```click y ```
+8) In client start react by
+```npm start```
+. To confirm running on a new port, click
+```y ```
 
 ## Important
 **1) MongoDB doesnt connect on very slow wifi or UCLA_WEB network**
