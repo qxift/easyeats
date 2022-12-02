@@ -205,7 +205,7 @@ function submitAddFoodHandler(e) {
         <Col>
         <div style={{height:700}}>
         <CardImg src={`fridgefridge.png`} alt="fridge" style={{height:600, width:600, top: 100, left: 35, position: "relative"}}/>
-        <View style={{flexGrow: 0, height:500, width:300, overflow:"scroll", top: -400, left: 300, position: "relative"}}>
+        <View style={{flexGrow: 0, height:400, width:300, overflow:"hidden", top: -400, left: 300, position: "relative"}}>
           <FlatList 
             
             numColumns={3}
