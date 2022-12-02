@@ -5,10 +5,12 @@
 body.light{
 --backg : coral;
 --box : rgba(61, 163, 194, 0.4);
+overflow:hidden
 }
 body.dark{
 --backg : rgb(203, 89, 48);
 --box : rgba(40, 108, 129, 0.4);
+overflow:hidden;
 }
 .my {
     width: 200px;
