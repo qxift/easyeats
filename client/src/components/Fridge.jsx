@@ -314,9 +314,9 @@ function submitAddFoodHandler(e) {
           </Row>
           <Row>
           {clickedDelete? 
-            <Button id ="recipes" onClick={clickStopDeleteHandler} style={{color: "red"}}>Stop Deletion</Button>
+            <Button id ="recipes" onClick={clickStopDeleteHandler} style={{color: "red", width: 150}}>Stop Deletion</Button>
             :
-            <Button id ="recipes" onClick={clickDeleteHandler}>Delete Ingredients</Button>
+            <Button id ="recipes" onClick={clickDeleteHandler} style={{width: 150}}>Delete Ingredients</Button>
           }
           </Row>
           
