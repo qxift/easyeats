@@ -5,7 +5,7 @@
 body.light{
 --backg : coral;
 --box : rgba(61, 163, 194, 0.4);
-overflow:hidden
+overflow:hidden;
 }
 body.dark{
 --backg : rgb(203, 89, 48);
