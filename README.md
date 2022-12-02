@@ -1,7 +1,7 @@
 ## To set up this applications
 
 1) Clone the git repository
-git clone https://github.com/qxift/easyeats.git
+```git clone https://github.com/qxift/easyeats.git```
 
 2) Navigate to the easyeats folder
 
