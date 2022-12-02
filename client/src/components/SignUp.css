@@ -18,7 +18,7 @@ body.light{
 body.dark{
   --colors : rgb(202, 114, 114);
   --borders:rgb(32, 64, 75);
-  --background : rgb(11, 8, 103);
+  --background : rgb(9, 16, 68);
   --back : rgba(69, 171, 205, 0.4);
   --label : darkgrey;
   --in: rgb(60, 60, 214);
